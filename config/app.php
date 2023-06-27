@@ -143,6 +143,8 @@ return [
         // 'store'  => 'redis',
     ],
 
+    'dev_hash' => env('DEV_HASH'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

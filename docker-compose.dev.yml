@@ -1,6 +1,6 @@
 version: '3'
 services:
-    laravel:
+    invite:
         image: ghcr.io/setnemo/php:latest
         environment:
             WEBROOT: '/var/www/html/public'
@@ -28,7 +28,7 @@ services:
             - POSTGRES_DB=${DB_DATABASE}
         restart: always
         ports:
-            - "${DB_PORT:-5432}:5432"
+            - "${DOCKER_DB_PORT:-5432}:5432"
         networks:
             - sail
         healthcheck:
@@ -40,7 +40,7 @@ services:
         image: 'redis:alpine'
         restart: always
         ports:
-            - '${REDIS_PORT:-6379}:6379'
+            - '${DOCKER_REDIS_PORT:-6379}:6379'
         volumes:
             - 'sail-redis:/data'
         networks:
@@ -53,8 +53,8 @@ services:
         image: 'mailhog/mailhog:latest'
         restart: always
         ports:
-            - '${FORWARD_MAILHOG_PORT:-1025}:1025'
-            - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
+            - '${DOCKER_FORWARD_MAILHOG_PORT:-1025}:1025'
+            - '${DOCKER_FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
         networks:
             - sail
 networks:
