@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/thank-you';
+    protected $redirectTo = '/codes';
 
     /**
      * Create a new controller instance.
@@ -63,6 +63,10 @@ class LoginController extends Controller
             }
             $request->session()->put('acc', $result);
             $data = json_decode($result, true);
+
+            $request->session()->put([
+                'password_hash_web' => $data['accessJwt'] ?? '',
+            ]);
             $request->session()->put('codes', $this->blueSkyCodes($data['accessJwt'] ?? ''));
 
             return $this->sendLoginResponse($request);

@@ -4,14 +4,18 @@ import path from 'path'
 
 export default defineConfig({
     plugins: [
-        laravel([
+        laravel({
+            input: [
             'resources/js/app.js',
             'resources/sass/app.scss',
-        ]),
+            ],
+            refresh: true,
+        }),
     ],
     resolve: {
         alias: {
             '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
+            '~jquery': path.resolve(__dirname, 'node_modules/jquery'),
         }
     },
 });

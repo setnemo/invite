@@ -28,13 +28,16 @@ Route::get('/deploy', static function() {
             Response::HTTP_NO_CONTENT
     );
 })->middleware(['dev'])->name('dev_deploy');
-Route::get('/thank-you', static function() {
-//    return response(
-//        session()->get('blsky'),
-//    );
-    return view('thank-you');
-})->name('thank-you');
 
 Auth::routes();
+
+Route::get('/codes', static function() {
+    return view('codes');
+})->middleware(['blue-sky'])->name('codes');
+
+Route::post('/donate', static function() {
+
+    return redirect(route('codes'));
+})->middleware(['blue-sky'])->name('donate');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
