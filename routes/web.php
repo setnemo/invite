@@ -26,3 +26,7 @@ Route::get('/deploy', static function() {
             Response::HTTP_NO_CONTENT
     );
 })->middleware(['dev'])->name('dev_deploy');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
