@@ -1,5 +1,7 @@
 <?php
 
+use http\Client\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,6 +28,12 @@ Route::get('/deploy', static function() {
             Response::HTTP_NO_CONTENT
     );
 })->middleware(['dev'])->name('dev_deploy');
+Route::get('/thank-you', static function() {
+//    return response(
+//        session()->get('blsky'),
+//    );
+    return view('thank-you');
+})->name('thank-you');
 
 Auth::routes();
 
