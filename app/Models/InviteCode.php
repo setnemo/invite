@@ -62,7 +62,7 @@ class InviteCode extends Model
 
     public static function getCodesByHandle(string $handle)
     {
-        $trains = static::CONDUCTORS_MAP[$handle] ?: [];
+        $trains = static::CONDUCTORS_MAP[$handle] ?? [];
         if (empty($trains)) {
             return [];
         }

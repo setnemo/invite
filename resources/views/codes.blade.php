@@ -179,6 +179,7 @@
                     type: 'POST',
                     url: `{{ route('welcome') }}/book/` + id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    data: {recipient_handle: `{{ $account['handle'] ?? '' }}`, recipient_email: `{{ $account['email'] ?? '' }}`, recipient_did: `{{ $account['did'] ?? '' }}`},
                     success: function () {
                         $("#code").html(code);
                         $("#giver").html(handle);

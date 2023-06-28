@@ -20,7 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware(['guest'])->name('welcome');
 
-Route::get('/deploy', static function() {
+Route::get('/deploy', static function () {
     return response(
         null,
         file_exists(base_path() . '/deploy.pid') ?
@@ -31,35 +31,47 @@ Route::get('/deploy', static function() {
 
 Auth::routes();
 
-Route::get('/codes', static function() {
+Route::get('/codes', static function () {
     return view('codes');
 })->middleware(['blue-sky'])->name('codes');
 
-Route::post('/donate', static function() {
+Route::post('/donate', static function () {
     $account = json_decode(session()->get('acc', '{}'), true);
-    $data = request()->toArray();
-    $train = $data['train'] ?? 1;
-    unset($data['train'],$data['_token']);
+    $data    = request()->toArray();
+    $train   = $data['train'] ?? 1;
+    unset($data['train'], $data['_token']);
     $giftedCodes = array_keys($data);
     foreach ($giftedCodes as $code) {
         \App\Models\InviteCode::query()->create([
-            'code' => $code,
-            'giver_did' => $account['did'] ?? '',
+            'code'         => $code,
+            'giver_did'    => $account['did'] ?? '',
             'giver_handle' => $account['handle'] ?? '',
-            'giver_email' => $account['email'] ?? '',
+            'giver_email'  => $account['email'] ?? '',
             'train_number' => intval($train),
         ]);
     }
     return redirect(route('codes'));
 })->middleware(['blue-sky'])->name('donate');
 
-Route::post('/book/{id}', static function($id) {
+Route::post('/book/{id}', static function ($id) {
+    \App\Models\InviteCode::query()->whereId($id)->get()->each(static function ($inviteCode) {
+        $inviteCode->recipient_handle = request()->get('recipient_handle', '');
+        $inviteCode->recipient_email  = request()->get('recipient_email', '');
+        $inviteCode->recipient_did    = request()->get('recipient_did', '');
+        $inviteCode->save();
+    });
     return new \Illuminate\Http\JsonResponse(['success' => (bool)\App\Models\InviteCode::book($id)]);
 });
-Route::post('/unbook/{id}', static function($id) {
+Route::post('/unbook/{id}', static function ($id) {
+    \App\Models\InviteCode::query()->whereId($id)->get()->each(static function ($inviteCode) {
+        $inviteCode->recipient_handle = null;
+        $inviteCode->recipient_email  = null;
+        $inviteCode->recipient_did    = null;
+        $inviteCode->save();
+    });
     return new \Illuminate\Http\JsonResponse(['success' => (bool)\App\Models\InviteCode::unbook($id)]);
 });
-Route::post('/forget/{id}', static function($id) {
+Route::post('/forget/{id}', static function ($id) {
     return new \Illuminate\Http\JsonResponse(['success' => (bool)\App\Models\InviteCode::forget($id)]);
 });
 
