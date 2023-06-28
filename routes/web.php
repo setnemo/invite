@@ -29,8 +29,6 @@ Route::get('/deploy', static function() {
     );
 })->middleware(['dev'])->name('dev_deploy');
 
-Auth::routes();
-
 Route::get('/codes', static function() {
     return view('codes');
 })->middleware(['blue-sky'])->name('codes');
