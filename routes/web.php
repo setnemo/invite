@@ -36,9 +36,31 @@ Route::get('/codes', static function() {
 })->middleware(['blue-sky'])->name('codes');
 
 Route::post('/donate', static function() {
-
-    var_dump(request());die;
+    $account = json_decode(session()->get('acc', '{}'), true);
+    $data = request()->toArray();
+    $train = $data['train'] ?? 1;
+    unset($data['train'],$data['_token']);
+    $giftedCodes = array_keys($data);
+    foreach ($giftedCodes as $code) {
+        \App\Models\InviteCode::query()->create([
+            'code' => $code,
+            'giver_did' => $account['did'] ?? '',
+            'giver_handle' => $account['handle'] ?? '',
+            'giver_email' => $account['email'] ?? '',
+            'train_number' => intval($train),
+        ]);
+    }
     return redirect(route('codes'));
 })->middleware(['blue-sky'])->name('donate');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('/book/{id}', static function($id) {
+    return new \Illuminate\Http\JsonResponse(['success' => (bool)\App\Models\InviteCode::book($id)]);
+});
+Route::post('/unbook/{id}', static function($id) {
+    return new \Illuminate\Http\JsonResponse(['success' => (bool)\App\Models\InviteCode::unbook($id)]);
+});
+Route::post('/forget/{id}', static function($id) {
+    return new \Illuminate\Http\JsonResponse(['success' => (bool)\App\Models\InviteCode::forget($id)]);
+});
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

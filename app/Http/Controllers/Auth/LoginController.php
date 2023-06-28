@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -57,22 +58,22 @@ class LoginController extends Controller
     {
         $this->validateLogin($request);
 
-        if ($result = $this->blueSkyLogin($request)) {
-            if ($request->hasSession()) {
-                $request->session()->put('auth.password_confirmed_at', time());
+        try {
+            if ($result = $this->blueSkyLogin($request)) {
+                $request->session()->put('acc', $result);
+                $data = json_decode($result, true);
+                $request->session()->put([
+                    'password_hash_web' => $data['accessJwt'] ?? '',
+                ]);
+                $request->session()->put('codes', $this->blueSkyCodes($data['accessJwt'] ?? ''));
+
+                return $this->sendLoginResponse($request);
             }
-            $request->session()->put('acc', $result);
-            $data = json_decode($result, true);
-
-            $request->session()->put([
-                'password_hash_web' => $data['accessJwt'] ?? '',
+        } catch (\Throwable $t) {
+            throw ValidationException::withMessages([
+                'error' => $t->getMessage(),
             ]);
-            $request->session()->put('codes', $this->blueSkyCodes($data['accessJwt'] ?? ''));
-
-            return $this->sendLoginResponse($request);
         }
-
-        return $this->sendFailedLoginResponse($request);
     }
 
     protected function sendLoginResponse(Request $request)
