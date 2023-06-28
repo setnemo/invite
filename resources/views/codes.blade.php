@@ -178,7 +178,7 @@
                 let handle = current.data('handle');
                 $.ajax({
                     type: 'POST',
-                    url: `{{ route('home') }}/book/` + id,
+                    url: `{{ route('welcome') }}/book/` + id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function () {
                         $("#code").html(code);
@@ -199,7 +199,7 @@
                 let id = current.data('id');
                 $.ajax({
                     type: 'POST',
-                    url: `{{ route('home') }}/forget/` + id,
+                    url: `{{ route('welcome') }}/forget/` + id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function (data) {
                         window.location.reload();
@@ -214,7 +214,7 @@
                 let id = current.data('id');
                 $.ajax({
                     type: 'POST',
-                    url: `{{ route('home') }}/unbook/` + id,
+                    url: `{{ route('welcome') }}/unbook/` + id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function (data) {
                         window.location.reload();

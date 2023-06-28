@@ -18,7 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware(['guest'])->name('welcome');
+//Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
+//Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, ''])->name('login');
 
 Route::get('/deploy', static function() {
     return response(
@@ -28,6 +30,8 @@ Route::get('/deploy', static function() {
             Response::HTTP_NO_CONTENT
     );
 })->middleware(['dev'])->name('dev_deploy');
+
+Auth::routes();
 
 Route::get('/codes', static function() {
     return view('codes');
@@ -61,4 +65,3 @@ Route::post('/forget/{id}', static function($id) {
     return new \Illuminate\Http\JsonResponse(['success' => (bool)\App\Models\InviteCode::forget($id)]);
 });
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
