@@ -1,6 +1,7 @@
 <?php
 
-use http\Client\Request;
+use App\Models\InviteCode;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +43,7 @@ Route::post('/donate', static function () {
     unset($data['train'], $data['_token']);
     $giftedCodes = array_keys($data);
     foreach ($giftedCodes as $code) {
-        \App\Models\InviteCode::query()->create([
+        InviteCode::query()->create([
             'code'         => $code,
             'giver_did'    => $account['did'] ?? '',
             'giver_handle' => $account['handle'] ?? '',
@@ -54,24 +55,24 @@ Route::post('/donate', static function () {
 })->middleware(['blue-sky'])->name('donate');
 
 Route::post('/book/{id}', static function ($id) {
-    \App\Models\InviteCode::query()->whereId($id)->get()->each(static function ($inviteCode) {
+    InviteCode::query()->whereId($id)->get()->each(static function ($inviteCode) {
         $inviteCode->recipient_handle = request()->get('recipient_handle', '');
         $inviteCode->recipient_email  = request()->get('recipient_email', '');
         $inviteCode->recipient_did    = request()->get('recipient_did', '');
         $inviteCode->save();
     });
-    return new \Illuminate\Http\JsonResponse(['success' => (bool)\App\Models\InviteCode::book($id)]);
+    return new JsonResponse(['success' => (bool)InviteCode::book($id)]);
 });
 Route::post('/unbook/{id}', static function ($id) {
-    \App\Models\InviteCode::query()->whereId($id)->get()->each(static function ($inviteCode) {
+    InviteCode::query()->whereId($id)->get()->each(static function ($inviteCode) {
         $inviteCode->recipient_handle = null;
         $inviteCode->recipient_email  = null;
         $inviteCode->recipient_did    = null;
         $inviteCode->save();
     });
-    return new \Illuminate\Http\JsonResponse(['success' => (bool)\App\Models\InviteCode::unbook($id)]);
+    return new JsonResponse(['success' => (bool)InviteCode::unbook($id)]);
 });
 Route::post('/forget/{id}', static function ($id) {
-    return new \Illuminate\Http\JsonResponse(['success' => (bool)\App\Models\InviteCode::forget($id)]);
+    return new JsonResponse(['success' => (bool)InviteCode::forget($id)]);
 });
 

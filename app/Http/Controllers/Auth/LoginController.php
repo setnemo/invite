@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -74,6 +75,8 @@ class LoginController extends Controller
                 'error' => $t->getMessage(),
             ]);
         }
+
+        throw ValidationException::withMessages(['error' => 'login failed']);
     }
 
     protected function sendLoginResponse(Request $request)
@@ -91,26 +94,30 @@ class LoginController extends Controller
             : redirect()->intended($this->redirectPath());
     }
 
-    protected function blueSkyLogin(Request $request)
+    /**
+     * @param Request $request
+     * @return string
+     * @throws GuzzleException
+     */
+    protected function blueSkyLogin(Request $request): string
     {
-        $client = new \GuzzleHttp\Client();
-        $res    = $client->post('https://bsky.social/xrpc/com.atproto.server.createSession', [
+        return (new Client())->post('https://bsky.social/xrpc/com.atproto.server.createSession', [
             'headers' => ['Content-Type' => 'application/json'],
             'body'    => json_encode(['identifier' => $request->get('identifier'), 'password' => $request->get('password'),]),
-        ]);
-
-        return $res->getBody()->__toString();
+        ])->getBody()->__toString();
     }
 
-    protected function blueSkyCodes(string $token)
+    /**
+     * @param string $token
+     * @return string
+     * @throws GuzzleException
+     */
+    protected function blueSkyCodes(string $token): string
     {
-        $client = new \GuzzleHttp\Client();
-        $res    = $client->get('https://bsky.social/xrpc/com.atproto.server.getAccountInviteCodes', [
+        return (new Client())->get('https://bsky.social/xrpc/com.atproto.server.getAccountInviteCodes', [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
             ],
-        ]);
-
-        return $res->getBody()->__toString();
+        ])->getBody()->__toString();
     }
 }

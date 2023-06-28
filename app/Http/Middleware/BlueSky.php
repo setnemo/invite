@@ -12,7 +12,7 @@ class BlueSky
     public function handle(Request $request, Closure $next)
     {
 
-        if (! $request->session()->has('password_hash_web')) {
+        if (!$request->session()->has('password_hash_web')) {
             return response('Error', Response::HTTP_FORBIDDEN);
         }
 
