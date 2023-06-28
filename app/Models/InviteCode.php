@@ -38,16 +38,28 @@ class InviteCode extends Model
         14 => '№14 "Укркосплей"',
         15 => '№15 "Блоґерский"',
         16 => '№16 "Розіграші"',
+        17 => '№17 "Три Панди"',
+        18 => '№18 "Лаковарний"',
     ];
     public const TRAIN_DISABLED = [
         9 => '№9 "Жіноче купе"',
         10 => '№10 "Великий Ненацьк"',
-        11 => '№11 "Украрт"',
     ];
 
     public const CONDUCTORS_MAP = [
         'setnemo.online' => [1,5,6,7,8,9,10,11,12,14,15,16],
-        'mathan.dev' => [1,5,6,7,8,9,10,11,12,14,15,16],
+        'uabluerail.org' => [1,5,6,7,8,9,10,11,12,14,15,16],
+        'bsky.church' => [1,5,6,7,8,9,10,11,12,14,15,16],
+        'mathan.dev' => [11],
+        'djema.qirim.land' => [5,6,7],
+        'deadcake.bsky.social' => [7],
+        'uacraft.bsky.social' => [8],
+        'ukrfanficshn.bsky.social' => [12],
+        'eklesa.bsky.social' => [14],
+        'soloplayerua.bsky.social' => [15],
+        'alco-alchemist.bsky.social' => [16],
+        'rikk-tikki-tav.bsky.social' => [17],
+        'headhyperempty.bsky.social' => [18],
     ];
 
     public static function getCodesByHandle(string $handle)
