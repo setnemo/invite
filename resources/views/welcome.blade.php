@@ -16,7 +16,7 @@
                                 </label>
                                 <div class="col-md-6">
                                     <input id="identifier" type="text" class="form-control" name="identifier"
-                                           value="zsu.blsky.social" required autofocus>
+                                           value="zsu.bsky.social" required autofocus>
                                 </div>
                             </div>
 
@@ -45,7 +45,7 @@
                             <div class="row mb-0 m-5">
                                 <div>
                                     <p class="lead">Для логіну ви використовуєте свій логін блюскай. Я там закинув
-                                        zsu.blsky.social, тому більшість людей замінить тільки zsu. Пароль можно свій,
+                                        zsu.bsky.social, тому більшість людей замінить тільки zsu. Пароль можно свій,
                                         но я б рекомендував зайти в блюскай, там в налаштуваннях є App Password. Їх
                                         можно створювати щоб логінитися своїм блю скай аккаунтом на інших сайтах. Це
                                         більш безпечно для вашого аккаунту.</p>
