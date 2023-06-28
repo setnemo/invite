@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
-                                        <button id="donate" type="submit" class="btn btn-dark" disabled>
+                                        <button id="donate" type="submit" class="btn btn-danger" disabled>
                                             Віддати жебракам
                                         </button>
                                     </div>

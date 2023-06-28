@@ -19,8 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 Route::get('/', function () {
     return view('welcome');
 })->middleware(['guest'])->name('welcome');
-//Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
-//Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, ''])->name('login');
 
 Route::get('/deploy', static function() {
     return response(
