@@ -37,6 +37,7 @@ Route::get('/codes', static function() {
 
 Route::post('/donate', static function() {
 
+    var_dump(request());die;
     return redirect(route('codes'));
 })->middleware(['blue-sky'])->name('donate');
 
