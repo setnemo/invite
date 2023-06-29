@@ -10,7 +10,7 @@
     ?>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">Мої інвайт коди</div>
                     <div class="card-body">
@@ -19,7 +19,7 @@
                                 @csrf
                                 <div class="row mb-3 p-3">
                                     @foreach($codes as $code)
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                        id="{{ $code['code'] }}" name="{{ $code['code'] }}"
@@ -44,8 +44,8 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="row mb-0">
-                                    <div class="col-md-8 offset-md-4">
+                                <div class="col-md-12" >
+                                    <div style="align-items:center; justify-content: center; display:flex;">
                                         <button id="donate" type="submit" class="btn btn-danger" disabled>
                                             Віддати жебракам
                                         </button>
