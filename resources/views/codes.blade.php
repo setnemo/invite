@@ -207,6 +207,9 @@ Desktop: https://bsky.app
                 });
             });
             $('.request-button-forget').on('click', event => {
+                if (!confirm('Забути код?')) {
+                    return;
+                }
                 let current = $(event.target);
                 let id = current.data('id');
                 $.ajax({
