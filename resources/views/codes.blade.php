@@ -58,16 +58,20 @@
                                 @foreach($items as $item)
                                     <div class="col-md-4 border border-success m-1">
                                         <hr>
-                                        Дарує <a href="https://bsky.app/profile/{{ $item->giver_handle }}"
+                                        Дарує <a href="https://bsky.app/profile/{{ $item->giver_did }}"
                                                  target="_blank">{{ $item->giver_handle }}</a>
                                         <hr>
                                         Надано {{ $item->created_at }}
                                         <hr>
                                         @if($item->booked_at)
+                                            Забукано користувачем <a
+                                                href="https://bsky.app/profile/{{ $item->recipient_did }}"
+                                                target="_blank">{{ $item->recipient_handle }}</a>
+                                            <hr>
                                             <span data-id="{{ $item->id }}"
                                                   class="btn btn-xs btn-success request-button-unbook"
                                                   data-code="{{ $item->code }}"
-                                                  data-handle='https://bsky.app/profile/{{ $item->giver_handle }}'
+                                                  data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
                                                   title="Разбукати Invite Code">
                                             <i class="fa fa-share" aria-hidden="true"></i> Разбукати
                                             </span>
@@ -75,7 +79,7 @@
                                             <span data-id="{{ $item->id }}"
                                                   class="btn btn-xs btn-danger request-button-forget"
                                                   data-code="{{ $item->code }}"
-                                                  data-handle='https://bsky.app/profile/{{ $item->giver_handle }}'
+                                                  data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
                                                   title="Разбукати Invite Code">
                                             <i class="fa fa-times" aria-hidden="true"></i> Забути
                                             </span>
@@ -83,7 +87,7 @@
                                             <span data-id="{{ $item->id }}"
                                                   class="btn btn-xs btn-primary request-button-text"
                                                   data-code="{{ $item->code }}"
-                                                  data-handle='https://bsky.app/profile/{{ $item->giver_handle }}'
+                                                  data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
                                                   title="Разбукати Invite Code">
                                             <i class="fa fa-eye" aria-hidden="true"></i> Подивитись
                                             </span>
@@ -91,7 +95,7 @@
                                             <span data-id="{{ $item->id }}"
                                                   class="btn btn-xs btn-warning request-button-book"
                                                   data-code="{{ $item->code }}"
-                                                  data-handle='https://bsky.app/profile/{{ $item->giver_handle }}'
+                                                  data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
                                                   title="Забукати Invite Code">
                                             <i class="fa fa-book" aria-hidden="true"></i> Забукати
                                         </span>
@@ -183,7 +187,11 @@ Desktop: https://bsky.app
                     type: 'POST',
                     url: `{{ route('welcome') }}/book/` + id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    data: {recipient_handle: `{{ $account['handle'] ?? '' }}`, recipient_email: `{{ $account['email'] ?? '' }}`, recipient_did: `{{ $account['did'] ?? '' }}`},
+                    data: {
+                        recipient_handle: `{{ $account['handle'] ?? '' }}`,
+                        recipient_email: `{{ $account['email'] ?? '' }}`,
+                        recipient_did: `{{ $account['did'] ?? '' }}`
+                    },
                     success: function () {
                         $("#code").html(code);
                         $("#giver").html(handle);
