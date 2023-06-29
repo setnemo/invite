@@ -5,7 +5,6 @@
     $account   = json_decode(session()->get('acc', '{}'), true);
     $data      = json_decode(session()->get('codes', '{}'), true);
     $codes     = $data['codes'] ?? [];
-    $codes[]   = ['code' => '01', 'uses' => []];
     $trains    = \App\Models\InviteCode::getCodesByHandle($account['handle'] ?? '');
     $usedCodes = \App\Models\InviteCode::query()->where('giver_did', $account['did'] ?? '')->withTrashed()->get(
     )->pluck('code')->toArray();
