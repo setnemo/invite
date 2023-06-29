@@ -50,9 +50,9 @@ class InviteCode extends Model
     ];
 
     public const CONDUCTORS_MAP = [
-        'setnemo.online'             => [1, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16],
-        'uabluerail.org'             => [1, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16],
-        'bsky.church'                => [1, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16],
+        'setnemo.online'             => [1, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20],
+        'uabluerail.org'             => [1, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20],
+        'bsky.church'                => [1, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20],
         'mathan.dev'                 => [11],
         'djema.qirim.land'           => [5, 6, 7],
         'deadcake.bsky.social'       => [7],
