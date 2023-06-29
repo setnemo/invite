@@ -2,16 +2,44 @@
 
 @section('content')
     <?php
-    $account   = json_decode(session()->get('acc', '{}'), true);
-    $data      = json_decode(session()->get('codes', '{}'), true);
-    $codes     = $data['codes'] ?? [];
-    $trains    = \App\Models\InviteCode::getCodesByHandle($account['handle'] ?? '');
-    $usedCodes = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
+    $account      = json_decode(session()->get('acc', '{}'), true);
+    $data         = json_decode(session()->get('codes', '{}'), true);
+    $codes        = $data['codes'] ?? [];
+    $handle       = $account['handle'] ?? '';
+    $trains       = \App\Models\InviteCode::getCodesByHandle($handle);
+    $usedCodes    = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
+    $isSuperAdmin = in_array($handle, \App\Models\InviteCode::SUPER_ADMINS);
     ?>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
-                <div class="card">
+                @if($isSuperAdmin)
+                    <div class="card mb-2">
+                        <div class="card-header">Додати інвайт коди</div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('donate') }}">
+                                @csrf
+                                <div class="row p-3">
+                                    <div class="form-check input-group">
+                                        <input class="form-check-text" type="text" value="" id="customCode" name="code"
+                                               required>
+                                        <select class="form-select form-select-md mb-0" aria-label=".form-select-md"
+                                                name="train" required>
+                                            @foreach(\App\Models\InviteCode::TRAIN_MAP as $id => $name)
+                                                <option
+                                                    value="{{ $id }} {{ isset(\App\Models\InviteCode::TRAIN_DISABLED[$id]) ? 'disabled' : '' }}">{{ $name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <button id="donateCustom" type="submit" class="btn btn-danger">
+                                            Віддати жебракам
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                @endif
+                <div class="card mb-2">
                     <div class="card-header">Мої інвайт коди</div>
                     <div class="card-body">
                         @if(!empty($codes))
@@ -26,7 +54,8 @@
                                                     {{ !empty($code['uses']) || in_array($code['code'], $usedCodes) ? 'disabled' : '' }}>
                                                 <label class="form-check-label" for="{{ $code['code'] }}">
                                                     @if (in_array($code['code'], $usedCodes))
-                                                        <span class="text-warning" data-bs-placement="top" data-bs-html="true"
+                                                        <span class="text-warning" data-bs-placement="top"
+                                                              data-bs-html="true"
                                                               title="Подарований">
                                                     @endif {{ $code['code'] }} @if (in_array($code['code'], $usedCodes)) </span>
                                                     @endif
@@ -44,7 +73,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-12" >
+                                <div class="col-md-12">
                                     <div style="align-items:center; justify-content: center; display:flex;">
                                         <button id="donate" type="submit" class="btn btn-danger" disabled>
                                             Віддати жебракам
@@ -112,6 +141,8 @@
                         </div>
                     </div>
                 @endforeach
+
+
                 <div id="myModal" class="modal" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -193,7 +224,7 @@ Desktop: https://bsky.app
                     url: `{{ route('welcome') }}/book/` + id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     data: {
-                        recipient_handle: `{{ $account['handle'] ?? '' }}`,
+                        recipient_handle: `{{ $handle }}`,
                         recipient_email: `{{ $account['email'] ?? '' }}`,
                         recipient_did: `{{ $account['did'] ?? '' }}`
                     },
@@ -222,7 +253,7 @@ Desktop: https://bsky.app
                     url: `{{ route('welcome') }}/forget/` + id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     data: {
-                        remover_handle: `{{ $account['handle'] ?? '' }}`,
+                        remover_handle: `{{ $handle }}`,
                         remover_email: `{{ $account['email'] ?? '' }}`,
                         remover_did: `{{ $account['did'] ?? '' }}`
                     },

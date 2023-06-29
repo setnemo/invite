@@ -33,6 +33,12 @@ class InviteCode extends Model
         'booked_at' => 'datetime',
     ];
 
+    public const SUPER_ADMINS = [
+        'setnemo.online',
+        'uabluerail.org',
+        'bsky.church',
+    ];
+
     public const TRAIN_MAP = [
         1  => '№1 "Церква Святого Інвайту"',
         5  => '№5 "Військовий"',

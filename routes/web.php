@@ -41,13 +41,17 @@ Route::post('/donate', static function () {
     $data    = request()->toArray();
     $train   = $data['train'] ?? 1;
     unset($data['train'], $data['_token']);
-    $giftedCodes = array_keys($data);
+    if (isset($data['code'])) {
+        $giftedCodes[]=$data['code'];
+    } else {
+        $giftedCodes = array_keys($data);
+    }
     foreach ($giftedCodes as $code) {
         if (InviteCode::query()->withTrashed()->where('code', $code)->exists()) {
             InviteCode::query()->where('code', $code)->withTrashed()->each(static function (InviteCode $inviteCode) {
                 if ($inviteCode->deleted_at) {
                     $inviteCode->restore();
-                    $inviteCode = $inviteCode->refresh();
+                    $inviteCode            = $inviteCode->refresh();
                     $inviteCode->booked_at = null;
                     $inviteCode->save();
                 }
