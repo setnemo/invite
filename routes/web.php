@@ -73,6 +73,12 @@ Route::post('/unbook/{id}', static function ($id) {
     return new JsonResponse(['success' => (bool)InviteCode::unbook($id)]);
 });
 Route::post('/forget/{id}', static function ($id) {
+    InviteCode::query()->whereId($id)->get()->each(static function ($inviteCode) {
+        $inviteCode->remover_handle = request()->get('remover_handle', '');
+        $inviteCode->remover_email  = request()->get('remover_email', '');
+        $inviteCode->remover_did    = request()->get('remover_did', '');
+        $inviteCode->save();
+    });
     return new JsonResponse(['success' => (bool)InviteCode::forget($id)]);
 });
 

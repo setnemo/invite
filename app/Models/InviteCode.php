@@ -22,6 +22,9 @@ class InviteCode extends Model
         'recipient_handle',
         'recipient_email',
         'recipient_did',
+        'remover_handle',
+        'remover_email',
+        'remover_did',
         'booked_at',
         'train_number',
     ];

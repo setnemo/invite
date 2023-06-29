@@ -216,6 +216,11 @@ Desktop: https://bsky.app
                     type: 'POST',
                     url: `{{ route('welcome') }}/forget/` + id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    data: {
+                        remover_handle: `{{ $account['handle'] ?? '' }}`,
+                        remover_email: `{{ $account['email'] ?? '' }}`,
+                        remover_did: `{{ $account['did'] ?? '' }}`
+                    },
                     success: function (data) {
                         window.location.reload();
                     },
