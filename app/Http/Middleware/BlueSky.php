@@ -13,7 +13,7 @@ class BlueSky
     {
 
         if (!$request->session()->has('password_hash_web')) {
-            return route('welcome');
+            return redirect(route('welcome'));
         }
 
         return $next($request);
