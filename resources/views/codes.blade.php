@@ -2,10 +2,13 @@
 
 @section('content')
     <?php
-    $account = json_decode(session()->get('acc', '{}'), true);
-    $data    = json_decode(session()->get('codes', '{}'), true);
-    $codes   = $data['codes'] ?? [];
-    $trains  = \App\Models\InviteCode::getCodesByHandle($account['handle'] ?? '');
+    $account   = json_decode(session()->get('acc', '{}'), true);
+    $data      = json_decode(session()->get('codes', '{}'), true);
+    $codes     = $data['codes'] ?? [];
+    $codes[]   = ['code' => '01', 'uses' => []];
+    $trains    = \App\Models\InviteCode::getCodesByHandle($account['handle'] ?? '');
+    $usedCodes = \App\Models\InviteCode::query()->where('giver_did', $account['did'] ?? '')->withTrashed()->get(
+    )->pluck('code')->toArray();
     ?>
     <div class="container">
         <div class="row justify-content-center">
@@ -22,9 +25,13 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                        id="{{ $code['code'] }}" name="{{ $code['code'] }}"
-                                                    {{ !empty($code['uses']) ? 'disabled' : '' }}>
+                                                    {{ !empty($code['uses']) || in_array($code['code'], $usedCodes) ? 'disabled' : '' }}>
                                                 <label class="form-check-label" for="{{ $code['code'] }}">
-                                                    {{ $code['code'] }}
+                                                    @if (empty($code['uses']) && in_array($code['code'], $usedCodes))
+                                                        <span class="text-warning" data-bs-placement="top" data-bs-html="true"
+                                                              title="Подарований">
+                                                    @endif {{ $code['code'] }} @if (empty($code['uses']) && in_array($code['code'], $usedCodes)) </span>
+                                                    @endif
                                                 </label>
                                             </div>
                                         </div>
