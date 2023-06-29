@@ -2,18 +2,18 @@
 
 @section('content')
     <?php
-    $account      = json_decode(session()->get('acc', '{}'), true);
-    $data         = json_decode(session()->get('codes', '{}'), true);
-    $codes        = $data['codes'] ?? [];
-    $handle       = $account['handle'] ?? '';
-    $trains       = \App\Models\InviteCode::getCodesByHandle($handle);
-    $usedCodes    = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
-    $isSuperAdmin = in_array($handle, \App\Models\InviteCode::CAN_ADD_CODES);
+    $account     = json_decode(session()->get('acc', '{}'), true);
+    $data        = json_decode(session()->get('codes', '{}'), true);
+    $codes       = $data['codes'] ?? [];
+    $handle      = $account['handle'] ?? '';
+    $trains      = \App\Models\InviteCode::getCodesByHandle($handle);
+    $usedCodes   = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
+    $canAddCodes = in_array($handle, \App\Models\InviteCode::CAN_ADD_CODES);
     ?>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
-                @if($isSuperAdmin)
+                @if($canAddCodes)
                     <div class="card mb-2">
                         <div class="card-header">Додати інвайт коди</div>
                         <div class="card-body">
