@@ -20,9 +20,7 @@
                             <form method="POST" action="{{ route('donate') }}">
                                 @csrf
                                 <div class="row p-3">
-                                    <div class="form-check input-group">
-                                        <input class="form-check-text" type="text" value="" id="customCode" name="code"
-                                               required>
+                                    <div class="form-check">
                                         <select class="form-select form-select-md mb-0" aria-label=".form-select-md"
                                                 name="train" required>
                                             @foreach(\App\Models\InviteCode::TRAIN_MAP as $id => $name)
@@ -30,9 +28,20 @@
                                                     value="{{ $id }} {{ isset(\App\Models\InviteCode::TRAIN_DISABLED[$id]) ? 'disabled' : '' }}">{{ $name }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="row col-md-12 p-3">
+                                    <div class="form-check input-group">
+                                        <input class="form-check-text mb-12" type="text" value="" id="customCode" name="code"
+                                               required>
                                         <button id="donateCustom" type="submit" class="btn btn-danger">
                                             Віддати жебракам
                                         </button>
+                                    </div>
+                                </div>
+                                <div class="row p-3">
+                                    <div class="form-check">
+
                                     </div>
                                 </div>
                             </form>

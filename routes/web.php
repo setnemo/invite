@@ -70,16 +70,18 @@ Route::post('/donate', static function () {
 })->middleware(['blue-sky'])->name('donate');
 
 Route::post('/book/{id}', static function ($id) {
-    InviteCode::query()->whereId($id)->get()->each(static function ($inviteCode) {
-        $inviteCode->recipient_handle = request()->get('recipient_handle', '');
-        $inviteCode->recipient_email  = request()->get('recipient_email', '');
-        $inviteCode->recipient_did    = request()->get('recipient_did', '');
-        $inviteCode->save();
-    });
+    $inviteCode = InviteCode::query()->whereId($id)->get()->first();
+    if ($inviteCode->booked_at) {
+        return new JsonResponse(['success' => false], \Symfony\Component\HttpFoundation\Response::HTTP_CONFLICT);
+    }
+    $inviteCode->recipient_handle = request()->get('recipient_handle', '');
+    $inviteCode->recipient_email  = request()->get('recipient_email', '');
+    $inviteCode->recipient_did    = request()->get('recipient_did', '');
+    $inviteCode->save();
     return new JsonResponse(['success' => (bool)InviteCode::book($id)]);
 });
 Route::post('/unbook/{id}', static function ($id) {
-    InviteCode::query()->whereId($id)->get()->each(static function ($inviteCode) {
+    InviteCode::query()->whereId($id)->get()->each(static function (InviteCode $inviteCode) {
         $inviteCode->recipient_handle = null;
         $inviteCode->recipient_email  = null;
         $inviteCode->recipient_did    = null;
@@ -88,7 +90,7 @@ Route::post('/unbook/{id}', static function ($id) {
     return new JsonResponse(['success' => (bool)InviteCode::unbook($id)]);
 });
 Route::post('/forget/{id}', static function ($id) {
-    InviteCode::query()->whereId($id)->get()->each(static function ($inviteCode) {
+    InviteCode::query()->whereId($id)->get()->each(static function (InviteCode $inviteCode) {
         $inviteCode->remover_handle = request()->get('remover_handle', '');
         $inviteCode->remover_email  = request()->get('remover_email', '');
         $inviteCode->remover_did    = request()->get('remover_did', '');
