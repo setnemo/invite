@@ -8,7 +8,7 @@
     $handle       = $account['handle'] ?? '';
     $trains       = \App\Models\InviteCode::getCodesByHandle($handle);
     $usedCodes    = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
-    $isSuperAdmin = in_array($handle, \App\Models\InviteCode::SUPER_ADMINS);
+    $isSuperAdmin = in_array($handle, \App\Models\InviteCode::CAN_ADD_CODES);
     ?>
     <div class="container">
         <div class="row justify-content-center">
@@ -32,7 +32,8 @@
                                 </div>
                                 <div class="row col-md-12 p-3">
                                     <div class="form-check input-group">
-                                        <input class="form-check-text mb-12" type="text" value="" id="customCode" name="code"
+                                        <input class="form-check-text mb-12" type="text" value="" id="customCode"
+                                               name="code"
                                                required>
                                         <button id="donateCustom" type="submit" class="btn btn-danger">
                                             Віддати жебракам
