@@ -13,7 +13,7 @@ class BlueSky
     {
 
         if (!$request->session()->has('password_hash_web')) {
-            return response('Error', Response::HTTP_FORBIDDEN);
+            return route('welcome');
         }
 
         return $next($request);
