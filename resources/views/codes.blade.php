@@ -12,7 +12,7 @@
         <div class="row justify-content-center">
             <div class="col-md-9">
                 <div class="card">
-                    <div class="card-header">Мої інвайт коди</div>
+                    <div class="card-header">Інвайт коди з вашого профіля:</div>
                     <div class="card-body">
                         @if(!empty($codes))
                             <form method="POST" action="{{ route('donate') }}">
@@ -36,6 +36,13 @@
                                     @endforeach
                                 </div>
                                 <div class="row mb-0 p-3">
+                                    <div style="align-items:center; justify-content: center; display:flex;">
+                                        Виберіть код з доступних вам (перераховані вище) та поїзд/чергу, на яку пожертвувати 🎟️. 
+                                        Коди пожервувані "На Церкву", будуть видимі всім провідникам всіх поїздів
+                                        і будуть розподілені в залежності від потреби.
+                                    </div>
+                                </div>
+                                <div class="row mb-0 p-3">
                                     <select class="form-select form-select-lg mb-1" aria-label=".form-select-xs"
                                             name="train" required>
                                         @foreach(\App\Models\InviteCode::TRAIN_MAP as $id => $name)
@@ -47,7 +54,7 @@
                                 <div class="col-md-12" >
                                     <div style="align-items:center; justify-content: center; display:flex;">
                                         <button id="donate" type="submit" class="btn btn-danger" disabled>
-                                            Віддати жебракам
+                                            Пожертвувати invite code 🎟️
                                         </button>
                                     </div>
                                 </div>
@@ -69,7 +76,7 @@
                                         Надано {{ $item->created_at }}
                                         <hr>
                                         @if($item->booked_at)
-                                            Забукано користувачем <a
+                                            Заброньовано користувачем <a
                                                 href="https://bsky.app/profile/{{ $item->recipient_did }}"
                                                 target="_blank">{{ $item->recipient_handle }}</a>
                                             <hr>
@@ -77,32 +84,32 @@
                                                   class="btn btn-xs btn-success request-button-unbook"
                                                   data-code="{{ $item->code }}"
                                                   data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                                  title="Разбукати Invite Code">
-                                            <i class="fa fa-share" aria-hidden="true"></i> Разбукати
+                                                  title="Повернути Invite Code 🎟️">
+                                            <i class="fa fa-share" aria-hidden="true"></i> Повернути 🎟️
                                             </span>
                                             <hr>
                                             <span data-id="{{ $item->id }}"
                                                   class="btn btn-xs btn-danger request-button-forget"
                                                   data-code="{{ $item->code }}"
                                                   data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                                  title="Забути Invite Code">
-                                            <i class="fa fa-times" aria-hidden="true"></i> Забути
+                                                  title="Забути Invite Code 🎟️">
+                                            <i class="fa fa-times" aria-hidden="true"></i> Забути 🎟️
                                             </span>
                                             <hr>
                                             <span data-id="{{ $item->id }}"
                                                   class="btn btn-xs btn-primary request-button-text"
                                                   data-code="{{ $item->code }}"
                                                   data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                                  title="Подивитися Invite Code">
-                                            <i class="fa fa-eye" aria-hidden="true"></i> Подивитись
+                                                  title="Подивитися Invite Code 🎟️">
+                                            <i class="fa fa-eye" aria-hidden="true"></i> Подивитись 🎟️
                                             </span>
                                         @else
                                             <span data-id="{{ $item->id }}"
                                                   class="btn btn-xs btn-warning request-button-book"
                                                   data-code="{{ $item->code }}"
                                                   data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                                  title="Забукати Invite Code">
-                                            <i class="fa fa-book" aria-hidden="true"></i> Забукати
+                                                  title="Забронювати Invite Code 🎟️">
+                                            <i class="fa fa-book" aria-hidden="true"></i> Забронювати 🎟️
                                         </span>
                                         @endif
                                         <hr>
@@ -116,7 +123,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Код забукано!</h5>
+                                <h5 class="modal-title">Код 🎟️ заброньовано!</h5>
                             </div>
                             <div class="modal-body">
                                 <p>Вітаємо!</p>

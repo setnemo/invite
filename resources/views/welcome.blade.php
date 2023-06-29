@@ -16,7 +16,7 @@
                                 </label>
                                 <div class="col-md-6">
                                     <input id="identifier" type="text" class="form-control" name="identifier"
-                                           value="zsu.bsky.social" required autofocus>
+                                           placeholder="mynickname.bsky.social" required autofocus>
                                 </div>
                             </div>
 
@@ -26,6 +26,7 @@
                                 </label>
                                 <div class="col-md-6">
                                     <input id="password" type="password"
+                                    placeholder="App Password (не вводьте свій звичайний пароль сюди)"
                                            class="form-control @error('password') is-invalid @enderror" name="password"
                                            required autocomplete="current-password">
                                     @error('password')
@@ -44,11 +45,12 @@
                             </div>
                             <div class="row mb-0 m-5">
                                 <div>
-                                    <p class="lead">Для логіну ви використовуєте свій логін блюскай. Я там закинув
-                                        zsu.bsky.social, тому більшість людей замінить тільки zsu. Пароль можно свій,
-                                        но я б рекомендував зайти в блюскай, там в налаштуваннях є App Password. Їх
-                                        можно створювати щоб логінитися своїм блю скай аккаунтом на інших сайтах. Це
-                                        більш безпечно для вашого аккаунту.</p>
+                                    <p class="lead">Для логіну ви використовуєте свій логін блюскай. В більшості випадків він виглядає як 
+                                        "mynickname.bsky.social". Якщо у вас кастомний домен, наприклад @setnemo.online, - вводьте його.
+                                        Ви можете ввести свій пароль, але ми наполегливо рекомендуємо використовувати тимчасові паролі, 
+                                        які можна згенерувати в налаштуваннях Settings -> App Password.
+                                        Їх можна і варто створювати аби логінитися своїм Bluesky аккаунтом на інших сайтах/застосунках. 
+                                        Це більш безпечно, адже так ви не надаєте свій основний пароль нікому крім офіційного застосунку Bluesky.</p>
                                 </div>
                             </div>
                         </form>
