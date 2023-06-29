@@ -9,6 +9,7 @@
     $trains      = \App\Models\InviteCode::getCodesByHandle($handle);
     $usedCodes   = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
     $canAddCodes = in_array($handle, \App\Models\InviteCode::CAN_ADD_CODES);
+    $queues      = \App\Models\InviteCode::getQueuesByHandle($handle);
     ?>
     <div class="container">
         <div class="row justify-content-center">
@@ -75,13 +76,19 @@
                                     @endforeach
                                 </div>
                                 <div class="row mb-0 p-3">
-                                    <select class="form-select form-select-lg mb-1" aria-label=".form-select-xs"
-                                            name="train" required>
-                                        @foreach(\App\Models\InviteCode::TRAIN_MAP as $id => $name)
-                                            <option
-                                                value="{{ $id }} {{ isset(\App\Models\InviteCode::TRAIN_DISABLED[$id]) ? 'disabled' : '' }}">{{ $name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="train" class="col-md-4 col-form-label text-md-end">
+                                        Оберіть свій потяг
+                                    </label>
+                                    <div class="col-md-6">
+                                        <select id="train" class="form-select form-select-md mb-1"
+                                                aria-label=".form-select-md"
+                                                name="train" required>
+                                            @foreach(\App\Models\InviteCode::TRAIN_MAP as $id => $name)
+                                                <option
+                                                    value="{{ $id }} {{ isset(\App\Models\InviteCode::TRAIN_DISABLED[$id]) ? 'disabled' : '' }}">{{ $name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div style="align-items:center; justify-content: center; display:flex;">
@@ -151,8 +158,31 @@
                         </div>
                     </div>
                 @endforeach
-
-
+                <hr>
+                @foreach($queues as $name => $items)
+                    <div class="card mt-2">
+                        <div class="card-header">Черга {{ $name }}</div>
+                        <div class="card-body">
+                            <div class="row mb-3 p-3">
+                                @foreach($items as $queueNumber => $item)
+                                    <div class="col-md-2 border border-success m-1">
+                                        <hr>
+                                        Посилання: {{ $item->link }}
+                                        <hr>
+                                        Дата {{ $item->created_at }}, номер в черзі: {{ $queueNumber + 1 }}
+                                        <hr>
+                                        <span data-id="{{ $item->id }}"
+                                              class="btn btn-xs btn-danger request-button-forget-invite"
+                                              title="Забути Invite">
+                                            <i class="fa fa-times" aria-hidden="true"></i> Забути
+                                            </span>
+                                        <hr>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
                 <div id="myModal" class="modal" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -220,7 +250,29 @@ Desktop: https://bsky.app
                 alert('Текст скопійовано');
                 return false;
             }
-
+            $('.request-button-forget-invite').on('click', event => {
+                if (!confirm('Забути інвайт?')) {
+                    return;
+                }
+                let current = $(event.target);
+                let id = current.data('id');
+                $.ajax({
+                    type: 'POST',
+                    url: `{{ route('welcome') }}/forget-invite/` + id,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    data: {
+                        remover_handle: `{{ $handle }}`,
+                        remover_email: `{{ $account['email'] ?? '' }}`,
+                        remover_did: `{{ $account['did'] ?? '' }}`
+                    },
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function (result) {
+                        alert('error');
+                    }
+                });
+            });
             $('input').change(() => {
                 $('#donate').prop('disabled', !$('input:checked').length);
             });

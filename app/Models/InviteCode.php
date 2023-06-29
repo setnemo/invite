@@ -90,6 +90,27 @@ class InviteCode extends Model
         foreach ($data->all() as $item) {
             $result[static::TRAIN_MAP[$item->train_number] ?? ''][] = $item;
         }
+
+        return $result;
+    }
+
+    /**
+     * @param string $handle
+     * @return array
+     */
+    public static function getQueuesByHandle(string $handle): array
+    {
+        $trains = static::CONDUCTORS_MAP[$handle] ?? [];
+        if (empty($trains)) {
+            return [];
+        }
+
+        $data   = Invite::query()->whereIn('train_number', $trains)->orderBy('id')->get();
+        $result = [];
+        foreach ($data->all() as $item) {
+            $result[static::TRAIN_MAP[$item->train_number] ?? ''][] = $item;
+        }
+
         return $result;
     }
 

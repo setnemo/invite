@@ -6,7 +6,6 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Авторизація</div>
-
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
@@ -35,8 +34,8 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row mb-0">
-                                <div class="col-md-8 offset-md-4">
+                            <div class="col-md-12">
+                                <div style="align-items:center; justify-content: center; display:flex;">
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Login') }}
                                     </button>
@@ -49,6 +48,13 @@
                                         но я б рекомендував зайти в блюскай, там в налаштуваннях є App Password. Їх
                                         можно створювати щоб логінитися своїм блю скай аккаунтом на інших сайтах. Це
                                         більш безпечно для вашого аккаунту.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div style="align-items:center; justify-content: center; display:flex;">
+                                    <a href="{{ route('invite') }}" class="btn btn-primary">
+                                        Стати прихожанином Церкви Святого Інвайту
+                                    </a>
                                 </div>
                             </div>
                         </form>
