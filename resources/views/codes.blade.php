@@ -80,7 +80,7 @@
                                                   class="btn btn-xs btn-danger request-button-forget"
                                                   data-code="{{ $item->code }}"
                                                   data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                                  title="Разбукати Invite Code">
+                                                  title="Забути Invite Code">
                                             <i class="fa fa-times" aria-hidden="true"></i> Забути
                                             </span>
                                             <hr>
@@ -88,7 +88,7 @@
                                                   class="btn btn-xs btn-primary request-button-text"
                                                   data-code="{{ $item->code }}"
                                                   data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                                  title="Разбукати Invite Code">
+                                                  title="Подивитися Invite Code">
                                             <i class="fa fa-eye" aria-hidden="true"></i> Подивитись
                                             </span>
                                         @else
