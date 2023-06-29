@@ -6,8 +6,7 @@
     $data      = json_decode(session()->get('codes', '{}'), true);
     $codes     = $data['codes'] ?? [];
     $trains    = \App\Models\InviteCode::getCodesByHandle($account['handle'] ?? '');
-    $usedCodes = \App\Models\InviteCode::query()->where('giver_did', $account['did'] ?? '')->withTrashed()->get(
-    )->pluck('code')->toArray();
+    $usedCodes = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
     ?>
     <div class="container">
         <div class="row justify-content-center">
@@ -26,10 +25,10 @@
                                                        id="{{ $code['code'] }}" name="{{ $code['code'] }}"
                                                     {{ !empty($code['uses']) || in_array($code['code'], $usedCodes) ? 'disabled' : '' }}>
                                                 <label class="form-check-label" for="{{ $code['code'] }}">
-                                                    @if (empty($code['uses']) && in_array($code['code'], $usedCodes))
+                                                    @if (in_array($code['code'], $usedCodes))
                                                         <span class="text-warning" data-bs-placement="top" data-bs-html="true"
                                                               title="Подарований">
-                                                    @endif {{ $code['code'] }} @if (empty($code['uses']) && in_array($code['code'], $usedCodes)) </span>
+                                                    @endif {{ $code['code'] }} @if (in_array($code['code'], $usedCodes)) </span>
                                                     @endif
                                                 </label>
                                             </div>
