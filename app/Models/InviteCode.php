@@ -99,9 +99,12 @@ class InviteCode extends Model
         }
 
         $data   = self::query()->whereIn('train_number', $trains)->orderBy('created_at')->get();
-        $result = [];
+        $result = $resultTmp = [];
         foreach ($data->all() as $item) {
-            $result[static::TRAIN_MAP[$item->train_number] ?? ''][] = $item;
+            $resultTmp[$item->train_number][] = $item;
+        }
+        foreach ($resultTmp as $key => $tmp) {
+            $result[static::TRAIN_MAP[$key] ?? ''] = $tmp;
         }
 
         return $result;
@@ -119,9 +122,12 @@ class InviteCode extends Model
         }
 
         $data   = Invite::query()->whereIn('train_number', $trains)->orderBy('id')->get();
-        $result = [];
+        $result = $resultTmp = [];
         foreach ($data->all() as $item) {
-            $result[static::TRAIN_MAP[$item->train_number] ?? ''][] = $item;
+            $resultTmp[$item->train_number][] = $item;
+        }
+        foreach ($resultTmp as $key => $tmp) {
+            $result[static::TRAIN_MAP[$key] ?? ''] = $tmp;
         }
 
         return $result;

@@ -13,10 +13,6 @@
     $queues                = \App\Models\InviteCode::getQueuesByHandle($handle);
     $isConductor           = \App\Models\InviteCode::isConductor($handle);
     $isOpened              = 0;
-    uksort($trains, static function ($keyA, $keyB) {
-        return (int)$keyA <=> (int)$keyB; });
-    uksort($queues, static function ($keyA, $keyB) {
-        return (int)$keyA <=> (int)$keyB; });
     ?>
     <div class="container">
         <div class="row justify-content-center">

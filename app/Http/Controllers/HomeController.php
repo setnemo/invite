@@ -41,9 +41,9 @@ class HomeController extends Controller
      * @throws NotFoundExceptionInterface
      * @throws \Throwable
      */
-    public function donate(Request $request, Session $session)
+    public function donate(Request $request)
     {
-        $account = json_decode($session->get('account', '{}'), true);
+        $account = json_decode($request->session()->get('account', '{}'), true);
         $data    = $request->toArray();
         $train   = $data['train'] ?? 1;
         unset($data['train'], $data['_token']);
