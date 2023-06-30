@@ -37,7 +37,6 @@ class InviteCode extends Model
         'setnemo.online',
         'uabluerail.org',
         'bsky.church',
-        'mathan.dev'
     ];
 
     public const TESTERS = [
@@ -45,6 +44,8 @@ class InviteCode extends Model
         'uabluerail.org',
         'bsky.church',
         'mods.uabluerail.org ',
+        'mathan.dev'
+
     ];
 
     public const TRAIN_MAP = [
