@@ -15,6 +15,11 @@ class BlueSky
         if (!$request->session()->has('password_hash_web')) {
             return redirect(route('welcome'));
         }
+        $account = json_decode(session()->get('acc', '{}'), true);
+        $handle = $account['handle'] ?? '';
+        if (!in_array($handle, \App\Models\InviteCode::SUPER_ADMINS)){
+            return redirect(route('welcome'));
+        }
 
         return $next($request);
     }
