@@ -39,10 +39,11 @@ class InviteCode extends Model
         'bsky.church',
     ];
 
-    public const SUPER_ADMINS = [
+    public const TESTERS = [
         'setnemo.online',
         'uabluerail.org',
         'bsky.church',
+        'mods.uabluerail.org ',
     ];
 
     public const TRAIN_MAP = [
