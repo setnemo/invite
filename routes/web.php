@@ -126,18 +126,19 @@ Route::post('/invite', function () {
 
 
 Route::post('/move', static function () {
-    $data     = request()->toArray();
-    $train    = (int)$data['train'] ?? 1;
-    $quantity = (int)$data['quantity'] ?? 0;
+    $data       = request()->toArray();
+    $train_from = (int)$data['train_from'] ?? 1;
+    $train_to   = (int)$data['train_to'] ?? 1;
+    $quantity   = (int)$data['quantity'] ?? 0;
     if ($quantity) {
         InviteCode::query()
             ->where('booked_at', null)
-            ->where('train_number', 1)
+            ->where('train_number', $train_from)
             ->orderBy('id')
             ->limit($quantity)
             ->get()
-            ->each(static function (InviteCode $inviteCode) use ($train) {
-                $inviteCode->train_number = $train;
+            ->each(static function (InviteCode $inviteCode) use ($train_to) {
+                $inviteCode->train_number = $train_to;
                 $inviteCode->save();
             });
     }
