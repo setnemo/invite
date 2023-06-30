@@ -12,11 +12,11 @@
                             @csrf
                             <div class="row mb-3">
                                 <label for="identifier" class="col-md-4 col-form-label text-md-end">
-                                    bluesky nickname
+                                    Bluesky nickname
                                 </label>
                                 <div class="col-md-6">
                                     <input id="identifier" type="text" class="form-control" name="identifier"
-                                           value="zsu.bsky.social" required autofocus>
+                                           placeholder="yournickname.bsky.social" required autofocus>
                                 </div>
                             </div>
 
@@ -25,7 +25,7 @@
                                     Temporary App Password
                                 </label>
                                 <div class="col-md-6">
-                                    <input id="password" type="password"
+                                    <input id="password" type="password" placeholder="App Pasword"
                                            class="form-control @error('password') is-invalid @enderror" name="password"
                                            required autocomplete="current-password">
                                     @error('password')
@@ -44,11 +44,10 @@
                             </div>
                             <div class="row mb-0 m-5">
                                 <div>
-                                    <p class="lead">Для логіну ви використовуєте свій логін блюскай. Я там закинув
-                                        zsu.bsky.social, тому більшість людей замінить тільки zsu. Пароль можно свій,
-                                        но я б рекомендував зайти в блюскай, там в налаштуваннях є App Password. Їх
-                                        можно створювати щоб логінитися своїм блю скай аккаунтом на інших сайтах. Це
-                                        більш безпечно для вашого аккаунту.</p>
+                                    <p class="lead">Логін - це ваш повний нікнейм в Bluesky виду "yournickname.bsky.social" або домен виду "kit-stepan.com". 
+                                        Ви можете використовувати свій пароль, але ми рекомендуємо скористатися більш безпечним App Password.
+                                        Його можна створити в Settings -> App Passwords. 
+                                        Таким чином ви не надаєте свій основний пароль жодному застосунку крім офіційного від Bluesky.</p>
                                 </div>
                             </div>
                         </form>
