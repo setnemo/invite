@@ -33,9 +33,9 @@ Route::get('/deploy', static function () {
 
 Auth::routes();
 
-Route::get('/codes', static function () {
-    return view('codes');
-})->middleware(['blue-sky'])->name('codes');
+Route::get('/home', static function () {
+    return view('home');
+})->middleware(['blue-sky'])->name('home');
 
 Route::post('/donate', static function () {
     $account = json_decode(session()->get('acc', '{}'), true);
@@ -67,7 +67,7 @@ Route::post('/donate', static function () {
             'train_number' => intval($train),
         ]);
     }
-    return redirect(route('codes'));
+    return redirect(route('home'));
 })->middleware(['blue-sky'])->name('donate');
 
 Route::post('/book/{id}', static function ($id) {
@@ -122,7 +122,7 @@ Route::post('/invite', function () {
     ]);
     session()->put('invite_send_id', $invite->id);
 //    return redirect(route('invite-welcome'));
-    return redirect(route('codes'));
+    return redirect(route('home'));
 })->middleware(['blue-sky-admin'])->name('invite-add');
 
 //Route::get('/invite-welcome', function () {

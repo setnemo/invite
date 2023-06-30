@@ -74,6 +74,10 @@ class InviteCode extends Model
         'headhyperempty.bsky.social' => [18],
     ];
 
+    public static function isConductor(string $handle): bool
+    {
+        return isset(static::CONDUCTORS_MAP[$handle]);
+    }
     /**
      * @param string $handle
      * @return array
