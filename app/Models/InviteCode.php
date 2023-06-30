@@ -43,7 +43,7 @@ class InviteCode extends Model
         'setnemo.online',
         'uabluerail.org',
         'bsky.church',
-        'mods.uabluerail.org ',
+        'mods.uabluerail.org',
         'mathan.dev'
 
     ];
