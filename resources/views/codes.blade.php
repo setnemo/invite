@@ -161,7 +161,7 @@
                 @if($canAddCodes)
                     <hr>
                     <div class="card">
-                        <div class="card-header">Стати прихожанином Церкви Святого Інвайту</div>
+                        <div class="card-header">Додати в живу чергу</div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('invite-add') }}">
                                 @csrf

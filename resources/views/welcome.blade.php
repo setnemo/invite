@@ -50,13 +50,6 @@
                                         більш безпечно для вашого аккаунту.</p>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div style="align-items:center; justify-content: center; display:flex;">
-                                    <a href="{{ route('invite') }}" class="btn btn-primary">
-                                        Стати прихожанином Церкви Святого Інвайту
-                                    </a>
-                                </div>
-                            </div>
                         </form>
                     </div>
                 </div>
