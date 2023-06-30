@@ -7,6 +7,7 @@
     $codes                 = $data['codes'] ?? [];
     $handle                = $account['handle'] ?? '';
     $addedCodes            = \App\Models\InviteCode::query()->get()->pluck('code')->toArray();
+    $deletedCodes          = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
     $trains                = \App\Models\InviteCode::getCodesByHandle($handle);
     $isSuperAdmin          = in_array($handle, \App\Models\InviteCode::SUPER_ADMINS);
     $queues                = \App\Models\InviteCode::getQueuesByHandle($handle);

@@ -20,7 +20,7 @@ class CodeService
         $builder                     = InviteCode::query();
         $this->addedCodes            = $builder->get()->pluck('code')->toArray();
         $this->bookedCodes           = $builder->whereNotNull('booked_at')->get()->pluck('code')->toArray();
-        $this->deletedCodes          = $builder->withTrashed()->get()->pluck('code')->toArray();
+        $this->deletedCodes          = InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
         $this->bookedAndDeletedCodes = $builder->whereNotNull('booked_at')->withTrashed()->get()->pluck('code')->toArray();
         $this->allBookedCodes        = array_merge($this->bookedCodes, $this->bookedAndDeletedCodes);
         $this->usedCodes             = $builder->withTrashed()->get()->pluck('code')->toArray();
