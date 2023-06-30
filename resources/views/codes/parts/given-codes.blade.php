@@ -1,4 +1,5 @@
 <?php
+
 $currentIt = 0; ?>
 @foreach($trains as $name => $items)
     <div class="accordion-item">
@@ -17,50 +18,44 @@ $currentIt = 0; ?>
             <div class="accordion-body">
                 <div class="row p-3">
                     @foreach($items as $item)
-                        <div class="col-md-3 border border-success m-1">
+                        <div class="col-md-4 border border-success m-1">
                             <hr>
-                            Дарує <a
-                                href="https://bsky.app/profile/{{ $item->giver_did }}"
-                                target="_blank">{{ $item->giver_handle }}</a>
+                            Дарує <a href="https://bsky.app/profile/{{ $item->giver_did }}"
+                                     target="_blank">{{ $item->giver_handle }}</a>
                             <hr>
                             Надано {{ $item->created_at }}
                             <hr>
                             @if($item->booked_at)
-                                Забукано користувачем <a
-                                    href="https://bsky.app/profile/{{ $item->recipient_did }}"
-                                    target="_blank">{{ $item->recipient_handle }}</a>
+                                Заброньовано користувачем <a href="https://bsky.app/profile/{{ $item->recipient_did }}"
+                                                             target="_blank">{{ $item->recipient_handle }}</a>
                                 <hr>
-                                <span data-id="{{ $item->id }}"
-                                      class="btn btn-xs btn-success request-button-unbook"
+                                <span data-id="{{ $item->id }}" class="btn btn-xs btn-success request-button-unbook"
                                       data-code="{{ $item->code }}"
                                       data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
                                       title="Повернути Invite Code 🎟️">
-                                        <i class="fa fa-share" aria-hidden="true"></i> Повернути 🎟️
-                                        </span>
+                                <i class="fa fa-share" aria-hidden="true"></i> Повернути 🎟️ в доступні
+                            </span>
                                 <hr>
-                                <span data-id="{{ $item->id }}"
-                                      class="btn btn-xs btn-danger request-button-forget"
+                                <span data-id="{{ $item->id }}" class="btn btn-xs btn-danger request-button-forget"
                                       data-code="{{ $item->code }}"
                                       data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                      title="Забути Invite Code 🎟️">
-                                        <i class="fa fa-times" aria-hidden="true"></i> Забути 🎟️
-                                        </span>
+                                      title="Видалити Invite Code 🎟️">
+                                <i class="fa fa-times" aria-hidden="true"></i> Видалити 🎟️ (Код використано або додано помилково)
+                            </span>
                                 <hr>
-                                <span data-id="{{ $item->id }}"
-                                      class="btn btn-xs btn-primary request-button-text"
+                                <span data-id="{{ $item->id }}" class="btn btn-xs btn-primary request-button-text"
                                       data-code="{{ $item->code }}"
                                       data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                      title="Подивитись Invite Code 🎟️">
-                                        <i class="fa fa-eye" aria-hidden="true"></i> Подивитись 🎟️
-                                        </span>
+                                      title="Подивитися Invite Code 🎟️">
+                                <i class="fa fa-eye" aria-hidden="true"></i> Подивитись
+                            </span>
                             @else
-                                <span data-id="{{ $item->id }}"
-                                      class="btn btn-xs btn-warning request-button-book"
+                                <span data-id="{{ $item->id }}" class="btn btn-xs btn-warning request-button-book"
                                       data-code="{{ $item->code }}"
                                       data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
                                       title="Забронювати Invite Code 🎟️">
-                                        <i class="fa fa-book" aria-hidden="true"></i> Забронювати 🎟️
-                                    </span>
+                                <i class="fa fa-book" aria-hidden="true"></i> Забронювати 🎟️
+                            </span>
                             @endif
                             <hr>
                         </div>
@@ -74,11 +69,11 @@ $currentIt = 0; ?>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Код 🎟️ заброньовано!</h5>
+                <h5 class="modal-title">Інвайт-код 🎟️ заброньовано!</h5>
             </div>
             <div class="modal-body">
                 <p>Вітаємо!</p>
-                <p>Ваш інвайт код:</p>
+                <p>Ваш інвайт-код:</p>
                 <p>>>>> <span id="code"></span> <<<<</p>
                 <p>Android:
                     https://play.google.com/store/apps/details?id=xyz.blueskyweb.app&hl=en_US&pli=1</p>
@@ -92,15 +87,11 @@ $currentIt = 0; ?>
                 <p>Ваш спонсор:</p>
                 <p><span id="giver"></span></p>
                 <p>Також прохання не тримати код неактивованим, це значно ускладнює нашу роботу
-                    і може
-                    привести до помилок - спонсор може віддати код комусь іншому, бо бачить його
-                    як
-                    активний у себе. Як тільки у вас буде можливість/зв'язок - зареєструйтеся
-                    будь
-                    ласка. І не забуть сказати що ви це зробили.</p>
+                    і може привести до помилок - спонсор може віддати код комусь іншому, бо бачить його
+                    як активний у себе. Як тільки у вас буде можливість/зв'язок - зареєструйтеся
+                    будь ласка. І не забуть сказати що ви це зробили.</p>
             </div>
             <textarea id="text-copy" hidden="hidden"></textarea>
-
             <div class="modal-footer">
                                 <span onclick="javascipt:copyText();" class="btn btn-warning">
                                     Copy text
@@ -116,7 +107,7 @@ $currentIt = 0; ?>
 <script type="module">
     $(function () {
         const textInvite = `Вітаємо!
-Ваш інвайт код:
+Ваш інвайт-код:
 >>>> :code <<<<
 
 Android: https://play.google.com/store/apps/details?id=xyz.blueskyweb.app&hl=en_US&pli=1

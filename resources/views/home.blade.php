@@ -2,21 +2,28 @@
 
 @section('content')
     <?php
-    $account     = json_decode(session()->get('acc', '{}'), true);
-    $data        = json_decode(session()->get('codes', '{}'), true);
-    $codes       = $data['codes'] ?? [];
-    $handle      = $account['handle'] ?? '';
-    $trains      = \App\Models\InviteCode::getCodesByHandle($handle);
-    $usedCodes   = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
-    $canAddCodes = in_array($handle, \App\Models\InviteCode::CAN_ADD_CODES);
-    $queues      = \App\Models\InviteCode::getQueuesByHandle($handle);
-    $isConductor = \App\Models\InviteCode::isConductor($handle);
-    $isOpened    = 0;
+    $account               = json_decode(session()->get('acc', '{}'), true);
+    $data                  = json_decode(session()->get('codes', '{}'), true);
+    $codes                 = $data['codes'] ?? [];
+    $handle                = $account['handle'] ?? '';
+    $trains                = \App\Models\InviteCode::getCodesByHandle($handle);
+    $addedCodes            = \App\Models\InviteCode::query()->get()->pluck('code')->toArray();
+    $bookedCodes           = \App\Models\InviteCode::query()->whereNotNull('booked_at')->get()->pluck('code')->toArray();
+    $deletedCodes          = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
+    $bookedAndDeletedCodes = \App\Models\InviteCode::query()->whereNotNull('booked_at')->withTrashed()->get()->pluck('code')->toArray();
+    $allBookedCodes        = array_merge($bookedCodes, $bookedAndDeletedCodes);
+    $usedCodes             = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
+    $canAddCodes           = in_array($handle, \App\Models\InviteCode::CAN_ADD_CODES);
+    $queues                = \App\Models\InviteCode::getQueuesByHandle($handle);
+    $isConductor           = \App\Models\InviteCode::isConductor($handle);
+    $isOpened              = 0;
+    ksort($trains);
+    ksort($queues);
     ?>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="accordion" id="accordionExample">
+                <div class="accordion" id="accordionCodes">
                     @if($isConductor)
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingModerateCodes">
@@ -25,7 +32,7 @@
                                         data-bs-target="#moderateCodes"
                                         aria-expanded="{{ !$isOpened ? 'true' : 'false' }}"
                                         aria-controls="moderateCodes">
-                                    Робочі інвайт коди для роздачі
+                                    Доступні інвайт-коди 🎟️ для роздачі
                                 </button>
                             </h2>
                             <div id="moderateCodes" class="accordion-collapse collapse {{ !$isOpened++ ? 'show' : '' }}"
@@ -44,7 +51,7 @@
                                     data-bs-target="#collapseMyInviteCodes"
                                     aria-expanded="{{ !$isOpened ? 'true' : 'false' }}"
                                     aria-controls="collapseMyInviteCodes">
-                                Інвайт коди з вашого профіля
+                                Мої інвайт-коди 🎟️
                             </button>
                         </h2>
                         <div id="collapseMyInviteCodes"
@@ -64,7 +71,7 @@
                                         data-bs-target="#collapseQueues"
                                         aria-expanded="{{ !$isOpened ? 'true' : 'false' }}"
                                         aria-controls="collapseQueues">
-                                    Живі черги
+                                    Живі черги 🚶🚶🚶
                                 </button>
                             </h2>
                             <div id="collapseQueues"
@@ -85,7 +92,7 @@
                                         data-bs-target="#collapseAddLiveQueue"
                                         aria-expanded="{{ !$isOpened ? 'true' : 'false' }}"
                                         aria-controls="collapseAddLiveQueue">
-                                    Додати в живу чергу
+                                    Додати в живу чергу 🚶🚶🚶➕🚶
                                 </button>
                             </h2>
                             <div id="collapseAddLiveQueue"
@@ -106,15 +113,36 @@
                                         data-bs-target="#collapseAddNewInviteCodes"
                                         aria-expanded="{{ !$isOpened ? 'true' : 'false' }}"
                                         aria-controls="collapseAddNewInviteCodes">
-                                    Додати робочі інвайт коди
+                                    Додати інвайт-код 🎟️ вручну
                                 </button>
                             </h2>
                             <div id="collapseAddNewInviteCodes"
                                  class="accordion-collapse collapse {{ !$isOpened++ ? 'show' : '' }}"
                                  aria-labelledby="headingAddNewInviteCodes"
-                                 data-bs-parent="#accordionExample">
+                                 data-bs-parent="#accordionAddNewInviteCodes">
                                 <div class="accordion-body">
                                     @include('codes.parts.add-codes')
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if($canAddCodes)
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingMoveChurchCodesTo">
+                                <button class="accordion-button{{ !$isOpened ? '' : ' collapsed' }}" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapseMoveChurchCodesTo"
+                                        aria-expanded="{{ !$isOpened ? 'true' : 'false' }}"
+                                        aria-controls="collapseMoveChurchCodesTo">
+                                    Перекинути інвайт-код 🎟️ в інший потяг
+                                </button>
+                            </h2>
+                            <div id="collapseMoveChurchCodesTo"
+                                 class="accordion-collapse collapse {{ !$isOpened++ ? 'show' : '' }}"
+                                 aria-labelledby="headingMoveChurchCodesTo"
+                                 data-bs-parent="#accordionMoveChurchCodesTo">
+                                <div class="accordion-body">
+                                    @include('codes.parts.move-codes')
                                 </div>
                             </div>
                         </div>

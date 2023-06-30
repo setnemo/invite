@@ -1,13 +1,12 @@
-<form method="POST" action="{{ route('donate') }}">
+<form method="POST" action="{{ route('move') }}">
     @csrf
     <div class="row">
         <div class="col-md-6 p-3">
             <div class="form-check input-group">
-                <input  type="text" class="form-control"
-                        value=""
-                       id="customCode"
-                       name="code"
-                       placeholder="Робочій інвайт-код"
+                <input type="number" class="form-control"
+                        value="1"
+                       id="quantity"
+                       name="quantity"
                        required>
             </div>
         </div>
@@ -27,10 +26,9 @@
             <div class="form-check input-group">
                 <button id="donateCustom" type="submit"
                         class="btn btn-danger">
-                    Записати інвайт-код 🎟️
+                    Перекинути інвайт-коди 🎟️
                 </button>
             </div>
         </div>
     </div>
-
 </form>

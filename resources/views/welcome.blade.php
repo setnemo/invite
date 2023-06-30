@@ -11,7 +11,7 @@
                             @csrf
                             <div class="row mb-3">
                                 <label for="identifier" class="col-md-4 col-form-label text-md-end">
-                                    bluesky nickname
+                                    Bluesky Nickname
                                 </label>
                                 <div class="col-md-6">
                                     <input id="identifier" type="text" class="form-control" name="identifier"
@@ -48,9 +48,8 @@
                                         <p class="lead">Закрито для тестування!</p>
                                     @else
                                         <p class="lead">Для логіну ви використовуєте свій логін блюскай. В більшості
-                                            випадків він виглядає як
-                                            "mynickname.bsky.social". Якщо у вас кастомний домен, наприклад
-                                            @setnemo.online, - вводьте його.
+                                            випадків він виглядає як "mynickname.bsky.social". Якщо у вас кастомний
+                                            домен, наприклад @setnemo.online, - вводьте його.
                                             Ви можете ввести свій пароль, але ми наполегливо рекомендуємо
                                             використовувати тимчасові паролі,
                                             які можна згенерувати в налаштуваннях Settings -> App Password.

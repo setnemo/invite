@@ -124,3 +124,23 @@ Route::post('/invite', function () {
     return redirect(route('home'));
 })->middleware(['blue-sky-admin'])->name('invite-add');
 
+
+Route::post('/move', static function () {
+    $data     = request()->toArray();
+    $train    = (int)$data['train'] ?? 1;
+    $quantity = (int)$data['quantity'] ?? 0;
+    if ($quantity) {
+        InviteCode::query()
+            ->where('booked_at', null)
+            ->where('train_number', 1)
+            ->orderBy('id')
+            ->limit($quantity)
+            ->get()
+            ->each(static function (InviteCode $inviteCode) use ($train) {
+                $inviteCode->train_number = $train;
+                $inviteCode->save();
+            });
+    }
+    return redirect(route('home'));
+})->middleware(['blue-sky-admin'])->name('move');
+
