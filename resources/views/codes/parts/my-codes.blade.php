@@ -3,8 +3,7 @@
         @csrf
         <div class="row mb-3 p-3">
             @foreach($codes as $code)
-                <div class="col-md-3"
-                     style="{{ !empty($code['uses']) && !in_array($code['code'], $addedCodes) && !in_array($code['code'], $deletedCodes) ? 'display: none' : '' }}">
+                <div class="col-md-3" style="{{ !empty($code['uses']) && !in_array($code['code'], $addedCodes) && !in_array($code['code'], $deletedCodes) ? 'display: none' : '' }}">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="{{ $code['code'] }}"
                                name="{{ $code['code'] }}" {{ !empty($code['uses']) || (in_array($code['code'], $addedCodes)) ? 'disabled' : '' }}>

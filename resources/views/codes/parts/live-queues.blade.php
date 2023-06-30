@@ -2,7 +2,7 @@
 $currentIt = 0; ?>
 @foreach($queues as $name => $items)
     <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
+        <h2 class="accordion-header" id="moderateQueues">
             <button class="accordion-button{{ !$currentIt ? '' : ' collapsed' }}" type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#moderateQueues{{ md5($name) }}"
@@ -12,7 +12,7 @@ $currentIt = 0; ?>
             </button>
         </h2>
         <div id="moderateQueues{{ md5($name) }}" class="accordion-collapse collapse {{ !$currentIt++ ? 'show' : '' }}"
-             aria-labelledby="headingOne"
+             aria-labelledby="moderateQueues"
              data-bs-parent="#moderateQueues{{ md5($name) }}">
             <div class="accordion-body">
                 <div class="row p-3">
