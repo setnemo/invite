@@ -11,7 +11,7 @@
                             @csrf
                             <div class="row mb-3">
                                 <label for="link" class="col-md-4 col-form-label text-md-end">
-                                    Посилання для зв'язку, твітур там, тг
+                                    Посилання
                                 </label>
                                 <div class="col-md-6">
                                     <input id="link" type="text" class="form-control" name="link"
@@ -20,7 +20,7 @@
                             </div>
                             <div class="row mb-0 p-3">
                                 <label for="train" class="col-md-4 col-form-label text-md-end">
-                                    Оберіть свій потяг
+                                    Номер потягу
                                 </label>
                                 <div class="col-md-6">
                                     <select id="train" class="form-select form-select-md mb-1" aria-label=".form-select-md"

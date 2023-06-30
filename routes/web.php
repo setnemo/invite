@@ -109,9 +109,9 @@ Route::post('/forget-invite/{id}', static function ($id) {
     return new JsonResponse(['success' => (bool)Invite::forget($id)]);
 })->middleware(['blue-sky-admin']);
 
-Route::get('/invite', function () {
-    return view('invite');
-})->middleware(['blue-sky'])->name('invite');
+//Route::get('/invite', function () {
+//    return view('invite');
+//})->name('invite');
 Route::post('/invite', function () {
     $data   = request()->toArray();
     $train  = $data['train'] ?? 1;
@@ -121,18 +121,19 @@ Route::post('/invite', function () {
         'train_number' => intval($train),
     ]);
     session()->put('invite_send_id', $invite->id);
-    return redirect(route('invite-welcome'));
-})->middleware(['guest'])->name('invite-add');
+//    return redirect(route('invite-welcome'));
+    return redirect(route('codes'));
+})->middleware(['blue-sky-admin'])->name('invite-add');
 
-Route::get('/invite-welcome', function () {
-    if (session()->has('invite_send_id')) {
-        $id = session()->get('invite_send_id');
-    } else {
-        return redirect(route('welcome'));
-    }
-    $invite = Invite::query()->whereId($id)->get();
-    if ($invite->isEmpty()) {
-        return redirect(route('welcome'));
-    }
-    return view('invite-welcome', ['count' => Invite::query()->where('train_number', $invite->first()->train_number)->count()]);
-})->middleware(['guest'])->name('invite-welcome');
+//Route::get('/invite-welcome', function () {
+//    if (session()->has('invite_send_id')) {
+//        $id = session()->get('invite_send_id');
+//    } else {
+//        return redirect(route('welcome'));
+//    }
+//    $invite = Invite::query()->whereId($id)->get();
+//    if ($invite->isEmpty()) {
+//        return redirect(route('welcome'));
+//    }
+//    return view('invite-welcome', ['count' => Invite::query()->where('train_number', $invite->first()->train_number)->count()]);
+//})->middleware(['guest'])->name('invite-welcome');
