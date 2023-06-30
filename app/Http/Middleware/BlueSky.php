@@ -17,10 +17,10 @@ class BlueSky
         }
         $account = json_decode(session()->get('acc', '{}'), true);
         $handle = $account['handle'] ?? '';
-        if (!in_array($handle, \App\Models\InviteCode::SUPER_ADMINS)){
-            return redirect(route('welcome'));
+        if (in_array($handle, \App\Models\InviteCode::SUPER_ADMINS)){
+            return $next($request);
         }
 
-        return $next($request);
+        return redirect(route('welcome'));
     }
 }
