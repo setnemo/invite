@@ -37,6 +37,7 @@ class InviteCode extends Model
         'setnemo.online',
         'uabluerail.org',
         'bsky.church',
+        'mathan.dev'
     ];
 
     public const TESTERS = [

@@ -9,6 +9,22 @@ $currentIt = 0; ?>
                     data-bs-target="#moderateCodes{{ md5($name) }}"
                     aria-expanded="{{ !$currentIt ? 'true' : 'false' }}"
                     aria-controls="moderateCodes{{ md5($name) }}">
+                    <?php
+                    $booked = $free = 0;
+                    foreach ($items as $item) {
+                        if ($item->booked_at) {
+                            $booked++;
+                        } else {
+                            $free++;
+                        }
+                    }
+                    ?>
+                @if($free)
+                    <span class="badge rounded-pill bg-success m-1">{{ $free }}</span>
+                @endif
+                @if($booked)
+                    <span class="badge rounded-pill bg-warning m-1">{{ $booked }}</span>
+                @endif
                 {{ $name }}
             </button>
         </h2>
