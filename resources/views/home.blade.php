@@ -161,6 +161,25 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingInviteRestoring">
+                                <button class="accordion-button{{ !$isOpened ? '' : ' collapsed' }}" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapseInviteRestoring"
+                                        aria-expanded="{{ !$isOpened ? 'true' : 'false' }}"
+                                        aria-controls="collapseInviteRestoring">
+                                    Відновити чергу 🚶🚶🚶
+                                </button>
+                            </h2>
+                            <div id="collapseInviteRestoring"
+                                 class="accordion-collapse collapse {{ !$isOpened++ ? 'show' : '' }}"
+                                 aria-labelledby="headingInviteRestoring"
+                                 data-bs-parent="#accordionInviteRestoring">
+                                <div class="accordion-body">
+                                    @include('codes.parts.restore-invites')
+                                </div>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>

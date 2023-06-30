@@ -103,6 +103,7 @@ class InviteCode extends Model
         foreach ($data->all() as $item) {
             $resultTmp[$item->train_number][] = $item;
         }
+        ksort($resultTmp);
         foreach ($resultTmp as $key => $tmp) {
             $result[static::TRAIN_MAP[$key] ?? ''] = $tmp;
         }
@@ -126,6 +127,7 @@ class InviteCode extends Model
         foreach ($data->all() as $item) {
             $resultTmp[$item->train_number][] = $item;
         }
+        ksort($resultTmp);
         foreach ($resultTmp as $key => $tmp) {
             $result[static::TRAIN_MAP[$key] ?? ''] = $tmp;
         }

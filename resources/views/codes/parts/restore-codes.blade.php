@@ -4,53 +4,54 @@ $items = \App\Models\InviteCode::query()->withTrashed()->whereNotNull('deleted_a
 );
 ?>
 @if(!$items->isEmpty())
-    <table class="table table-dark table-striped">
-        <thead>
-        <tr>
-            <th scope="col">інвайт-код 🎟️</th>
-            <th scope="col">Потяг</th>
-            <th scope="col">Власник</th>
-            <th scope="col">Кондуктор</th>
-            <th scope="col">Видалив</th>
-            <th scope="col">Дати</th>
-            <th scope="col">Відновити/Знищити</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($items->all() as $item)
+    <div class="table-responsive">
+        <table class="table table-dark table-striped">
+            <thead>
             <tr>
-                <td>{{ $item->code }}</td>
-                <td>{{ \App\Models\InviteCode::TRAIN_MAP[$item->train_number] ?? '' }}</td>
-                <td><a href="https://bsky.app/profile/{{ $item->giver_did }}">{{ $item->giver_handle }}</a>
-                    ({{ $item->giver_email }})
-                </td>
-                <td><a href="https://bsky.app/profile/{{ $item->recipient_did }}">{{ $item->recipient_handle }}</a>
-                    ({{ $item->recipient_email }})
-                </td>
-                <td><a href="https://bsky.app/profile/{{ $item->remover_did }}">{{ $item->remover_handle }}</a>
-                    ({{ $item->remover_email }})
-                </td>
-                <td>
-                    <div class="row">
-                        <span class="nobr text-success">created: {{ $item->created_at }}</span>
-                        <span class="nobr text-warning">booked: {{ $item->booked_at }}</span>
-                        <span class="nobr text-danger">deleted: {{ $item->deleted_at }}</span>
-                        <span class="nobr text-secondary">updated: {{ $item->updated_at }}</span>
-                    </div>
-                </td>
-                <td>
-                    <button data-id="{{ $item->id }}" class="btn btn-success request-button-codes-restore">
-                        <i data-id="{{ $item->id }}" class="fa fa-share" aria-hidden="true"></i>
-                    </button>
-                    <button data-id="{{ $item->id }}" class="btn btn-danger request-button-codes-force-delete">
-                        <i data-id="{{ $item->id }}" class="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                </td>
+                <th scope="col">інвайт-код 🎟️</th>
+                <th scope="col">Потяг</th>
+                <th scope="col">Власник</th>
+                <th scope="col">Кондуктор</th>
+                <th scope="col">Видалив</th>
+                <th scope="col">Дати</th>
+                <th scope="col">Відновити/Знищити</th>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+            @foreach($items->all() as $item)
+                <tr>
+                    <td>{{ $item->code }}</td>
+                    <td>{{ \App\Models\InviteCode::TRAIN_MAP[$item->train_number] ?? '' }}</td>
+                    <td><a href="https://bsky.app/profile/{{ $item->giver_did }}">{{ $item->giver_handle }}</a>
+                        ({{ $item->giver_email }})
+                    </td>
+                    <td><a href="https://bsky.app/profile/{{ $item->recipient_did }}">{{ $item->recipient_handle }}</a>
+                        ({{ $item->recipient_email }})
+                    </td>
+                    <td><a href="https://bsky.app/profile/{{ $item->remover_did }}">{{ $item->remover_handle }}</a>
+                        ({{ $item->remover_email }})
+                    </td>
+                    <td>
+                        <div class="row">
+                            <span class="nobr text-success">created: {{ $item->created_at }}</span>
+                            <span class="nobr text-warning">booked: {{ $item->booked_at }}</span>
+                            <span class="nobr text-danger">deleted: {{ $item->deleted_at }}</span>
+                            <span class="nobr text-secondary">updated: {{ $item->updated_at }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <button data-id="{{ $item->id }}" class="btn btn-success request-button-codes-restore">
+                            <i data-id="{{ $item->id }}" class="fa fa-share" aria-hidden="true"></i>
+                        </button>
+                        <button data-id="{{ $item->id }}" class="btn btn-danger request-button-codes-force-delete">
+                            <i data-id="{{ $item->id }}" class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
     <script type="module">
         $(function () {
             $('.request-button-codes-restore').on('click', event => {
