@@ -8,41 +8,7 @@
                         <input class="form-check-input" type="checkbox" value="" id="{{ $code['code'] }}"
                                name="{{ $code['code'] }}" {{ !empty($code['uses']) || (in_array($code['code'], $addedCodes)) ? 'disabled' : '' }}>
                         <label class="form-check-label" for="{{ $code['code'] }}">
-                            @if (in_array($code['code'], $addedCodes) && empty($code['uses']))
-                                <span class="text-primary" data-bs-placement="top" data-bs-html="true"
-                                      title="Код додано до системи, дякуємо">
-                                            @elseif (in_array($code['code'], $deletedCodes) && empty($code['uses']))
-                                        <span class="text-warning" data-bs-placement="top" data-bs-html="true"
-                                              title="Код раніше вже додавався до системи">
-                                                @elseif (in_array($code['code'], $addedCodes) && !empty($code['uses']))
-                                                <span class="text-danger" data-bs-placement="top" data-bs-html="true"
-                                                      title="Код недійсний :(">
-                                                    @elseif (in_array($code['code'], $allBookedCodes) && !empty($code['uses']))
-                                                        <span class="text-success" data-bs-placement="top"
-                                                              data-bs-html="true" title="Код використано, дякуємо!">
-                                                        @elseif (empty($code['uses']))
-                                                                <span class="text-info" data-bs-placement="top"
-                                                                      data-bs-html="true"
-                                                                      title="Код доступний для пожертви">
-                                                            @endif
-
-                                                                    {{ $code['code'] }}
-
-                                                                    @if (in_array($code['code'], $addedCodes) && empty($code['uses']))
-                                                                        (код додано до системи, дякуємо)
-                                                                    @elseif (in_array($code['code'], $deletedCodes) && empty($code['uses']))
-                                                                        (код було видалено з системи)
-                                                                    @elseif (in_array($code['code'], $addedCodes) && !empty($code['uses']))
-                                                                        (код недійсний)
-                                                                    @elseif (in_array($code['code'], $allBookedCodes) && !empty($code['uses']))
-                                                                        (код використано, дякуємо!)
-                                                                    @elseif (empty($code['uses']))
-                                                                        (код доступний для пожертви)
-                                                                    @endif
-
-                                                                    @if (empty($code['uses']))
-                                                        </span>
-                            @endif
+                            {!! app(\App\Services\CodeService::class)->getCodeCheckbox($code) !!}
                         </label>
                     </div>
                 </div>

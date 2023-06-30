@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\BlueSky;
+use App\Services\CodeService;
+use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +16,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(BlueSky::class, function () {
+            return new BlueSky(new Client());
+        });
+        $this->app->singleton(CodeService::class, function () {
+            return new CodeService();
+        });
     }
 
     /**

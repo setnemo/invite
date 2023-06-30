@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('move') }}">
+<form method="POST" action="{{ route('invite-move') }}">
     @csrf
     <div class="row">
         <div class="col-md-3 p-3">
@@ -39,7 +39,7 @@
         <div class="col-md-3 p-3">
             <div class="form-check input-group">
                 <button id="donateCustom" type="submit"
-                        class="btn btn-danger">
+                        class="btn btn-outline-danger">
                     Перекинути інвайт-коди 🎟️
                 </button>
             </div>

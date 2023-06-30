@@ -1,7 +1,13 @@
 <?php
 
+use App\Http\Controllers\DonateController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InviteCodeController;
+use App\Http\Controllers\InviteController;
+use App\Http\Controllers\LoginController;
 use App\Models\Invite;
 use App\Models\InviteCode;
+use App\Services\BlueSky;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -31,117 +37,25 @@ Route::get('/deploy', static function () {
     );
 })->middleware(['dev'])->name('dev_deploy');
 
-Auth::routes();
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('show-login-form');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/home', static function () {
-    return view('home');
-})->middleware(['blue-sky'])->name('home');
+Route::get('/home', [HomeController::class, 'home'])->name('home');
+Route::post('/donate', [HomeController::class, 'donate'])->name('donate');
 
-Route::post('/donate', static function () {
-    $account = json_decode(session()->get('acc', '{}'), true);
-    $data    = request()->toArray();
-    $train   = $data['train'] ?? 1;
-    unset($data['train'], $data['_token']);
-    if (isset($data['code'])) {
-        $giftedCodes[] = $data['code'];
-    } else {
-        $giftedCodes = array_keys($data);
-    }
-    foreach ($giftedCodes as $code) {
-        if (InviteCode::query()->withTrashed()->where('code', $code)->exists()) {
-            InviteCode::query()->where('code', $code)->withTrashed()->each(static function (InviteCode $inviteCode) {
-                if ($inviteCode->deleted_at) {
-                    $inviteCode->restore();
-                    $inviteCode            = $inviteCode->refresh();
-                    $inviteCode->booked_at = null;
-                    $inviteCode->save();
-                }
-            });
-            continue;
-        }
-        InviteCode::query()->create([
-            'code'         => $code,
-            'giver_did'    => $account['did'] ?? '',
-            'giver_handle' => $account['handle'] ?? '',
-            'giver_email'  => $account['email'] ?? '',
-            'train_number' => intval($train),
-        ]);
-    }
-    return redirect(route('home'));
-})->middleware(['blue-sky'])->name('donate');
+Route::post('/book/{id}', [InviteCodeController::class, 'book'])->name('invite-book');
+Route::post('/unbook/{id}', [InviteCodeController::class, 'unbook'])->name('invite-unbook');
+Route::post('/forget/{id}', [InviteCodeController::class, 'forget'])->name('invite-forget');
+Route::post('/move', [InviteCodeController::class, 'move'])->name('invite-move');
+Route::post('/forget-invite/{id}', [InviteController::class, 'forget'])->name('invite-forget');
+Route::post('/invite', [InviteController::class, 'add'])->name('invite-add');
 
-Route::post('/book/{id}', static function ($id) {
-    $inviteCode = InviteCode::query()->whereId($id)->get()->first();
-    if ($inviteCode->booked_at) {
-        return new JsonResponse(['success' => false], \Symfony\Component\HttpFoundation\Response::HTTP_CONFLICT);
-    }
-    $inviteCode->recipient_handle = request()->get('recipient_handle', '');
-    $inviteCode->recipient_email  = request()->get('recipient_email', '');
-    $inviteCode->recipient_did    = request()->get('recipient_did', '');
-    $inviteCode->save();
-    return new JsonResponse(['success' => (bool)InviteCode::book($id)]);
-})->middleware(['blue-sky-admin']);
+Route::middleware(['blue-sky-super-admin'])->group(static function () {
+    Route::post('/invite-code-restore/{id}', [InviteCodeController::class, 'restore'])->name('invite-code-restore');
+    Route::post('/invite-code-force-delete/{id}', [InviteCodeController::class, 'forceDelete'])->name('invite-code-force-delete');
+    Route::post('/invite-restore/{id}', [InviteController::class, 'restore'])->name('invite-restore');
+    Route::post('/invite-force-delete/{id}', [InviteController::class, 'forceDelete'])->name('invite-force-delete');
+});
 
-Route::post('/unbook/{id}', static function ($id) {
-    InviteCode::query()->whereId($id)->get()->each(static function (InviteCode $inviteCode) {
-        $inviteCode->recipient_handle = null;
-        $inviteCode->recipient_email  = null;
-        $inviteCode->recipient_did    = null;
-        $inviteCode->save();
-    });
-    return new JsonResponse(['success' => (bool)InviteCode::unbook($id)]);
-})->middleware(['blue-sky-admin']);
-
-Route::post('/forget/{id}', static function ($id) {
-    InviteCode::query()->whereId($id)->get()->each(static function (InviteCode $inviteCode) {
-        $inviteCode->remover_handle = request()->get('remover_handle', '');
-        $inviteCode->remover_email  = request()->get('remover_email', '');
-        $inviteCode->remover_did    = request()->get('remover_did', '');
-        $inviteCode->save();
-    });
-    return new JsonResponse(['success' => (bool)InviteCode::forget($id)]);
-})->middleware(['blue-sky-admin']);
-
-Route::post('/forget-invite/{id}', static function ($id) {
-    Invite::query()->whereId($id)->get()->each(static function (Invite $invite) {
-        $invite->remover_handle = request()->get('remover_handle', '');
-        $invite->remover_email  = request()->get('remover_email', '');
-        $invite->remover_did    = request()->get('remover_did', '');
-        $invite->save();
-    });
-    return new JsonResponse(['success' => (bool)Invite::forget($id)]);
-})->middleware(['blue-sky-admin']);
-
-Route::post('/invite', function () {
-    $data   = request()->toArray();
-    $train  = $data['train'] ?? 1;
-    $link   = $data['link'] ?? 1;
-    $invite = Invite::query()->create([
-        'link'         => $link,
-        'train_number' => intval($train),
-    ]);
-    session()->put('invite_send_id', $invite->id);
-    return redirect(route('home'));
-})->middleware(['blue-sky-admin'])->name('invite-add');
-
-
-Route::post('/move', static function () {
-    $data       = request()->toArray();
-    $train_from = (int)$data['train_from'] ?? 1;
-    $train_to   = (int)$data['train_to'] ?? 1;
-    $quantity   = (int)$data['quantity'] ?? 0;
-    if ($quantity) {
-        InviteCode::query()
-            ->where('booked_at', null)
-            ->where('train_number', $train_from)
-            ->orderBy('id')
-            ->limit($quantity)
-            ->get()
-            ->each(static function (InviteCode $inviteCode) use ($train_to) {
-                $inviteCode->train_number = $train_to;
-                $inviteCode->save();
-            });
-    }
-    return redirect(route('home'));
-})->middleware(['blue-sky-admin'])->name('move');
 

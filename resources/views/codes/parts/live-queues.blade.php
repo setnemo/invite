@@ -8,6 +8,7 @@ $currentIt = 0; ?>
                     data-bs-target="#moderateQueues{{ md5($name) }}"
                     aria-expanded="{{ !$currentIt ? 'true' : 'false' }}"
                     aria-controls="moderateQueues{{ md5($name) }}">
+                <span class="badge rounded-pill bg-danger m-1">{{ count($items) }}</span>
                 {{ $name }}
             </button>
         </h2>
@@ -16,7 +17,6 @@ $currentIt = 0; ?>
              data-bs-parent="#moderateQueues{{ md5($name) }}">
             <div class="accordion-body">
                 <div class="row p-3">
-
                     @foreach($items as $queueNumber => $item)
                         <div class="col-md-2 border border-success m-1">
                             <hr>

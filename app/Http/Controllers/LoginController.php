@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use App\Services\BlueSky;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -32,6 +30,8 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/home';
 
+    private BlueSky $blueSkyService;
+
     /**
      * Create a new controller instance.
      *
@@ -40,6 +40,15 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->blueSkyService = app(BlueSky::class);
+    }
+
+    /**
+     * @return BlueSky
+     */
+    public function getBlueSkyService(): BlueSky
+    {
+        return $this->blueSkyService;
     }
 
     public function username()
@@ -55,18 +64,34 @@ class LoginController extends Controller
         ]);
     }
 
+    public function showLoginForm()
+    {
+        return redirect(route('welcome'));
+    }
+
+    public function logout()
+    {
+        session()->forget([
+            'blue_sky_access_jwt',
+            'account',
+            'codes',
+        ]);
+
+        return redirect(route('welcome'));
+    }
+
     public function login(Request $request)
     {
         $this->validateLogin($request);
 
         try {
-            if ($result = $this->blueSkyLogin($request)) {
-                $request->session()->put('acc', $result);
+            if ($result = $this->getBlueSkyService()->atprotoCreateSession($request->get('identifier', ''), $request->get('password', ''))) {
+                $request->session()->put('account', $result);
                 $data = json_decode($result, true);
                 $request->session()->put([
-                    'password_hash_web' => $data['accessJwt'] ?? '',
+                    'blue_sky_access_jwt' => $data['accessJwt'] ?? '',
                 ]);
-                $request->session()->put('codes', $this->blueSkyCodes($data['accessJwt'] ?? ''));
+                $request->session()->put('codes', $this->getBlueSkyService()->atprotoGetAccountInviteCodes($data['accessJwt'] ?? ''));
 
                 return $this->sendLoginResponse($request);
             }
@@ -94,30 +119,4 @@ class LoginController extends Controller
             : redirect()->intended($this->redirectPath());
     }
 
-    /**
-     * @param Request $request
-     * @return string
-     * @throws GuzzleException
-     */
-    protected function blueSkyLogin(Request $request): string
-    {
-        return (new Client())->post('https://bsky.social/xrpc/com.atproto.server.createSession', [
-            'headers' => ['Content-Type' => 'application/json'],
-            'body'    => json_encode(['identifier' => $request->get('identifier'), 'password' => $request->get('password'),]),
-        ])->getBody()->__toString();
-    }
-
-    /**
-     * @param string $token
-     * @return string
-     * @throws GuzzleException
-     */
-    protected function blueSkyCodes(string $token): string
-    {
-        return (new Client())->get('https://bsky.social/xrpc/com.atproto.server.getAccountInviteCodes', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,
-            ],
-        ])->getBody()->__toString();
-    }
 }

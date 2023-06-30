@@ -22,8 +22,8 @@
         <div class="col-md-3 p-3">
             <div class="form-check input-group">
                 <div style="align-items:center; justify-content: center; display:flex;">
-                    <button type="submit" class="btn btn-primary">
-                        Амінь
+                    <button type="submit" class="btn btn-outline-danger">
+                        В кінець черги 🔚
                     </button>
                 </div>
             </div>

@@ -2,23 +2,20 @@
 
 @section('content')
     <?php
-    $account               = json_decode(session()->get('acc', '{}'), true);
+    $account               = json_decode(session()->get('account', '{}'), true);
     $data                  = json_decode(session()->get('codes', '{}'), true);
     $codes                 = $data['codes'] ?? [];
     $handle                = $account['handle'] ?? '';
-    $trains                = \App\Models\InviteCode::getCodesByHandle($handle);
     $addedCodes            = \App\Models\InviteCode::query()->get()->pluck('code')->toArray();
-    $bookedCodes           = \App\Models\InviteCode::query()->whereNotNull('booked_at')->get()->pluck('code')->toArray();
-    $deletedCodes          = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
-    $bookedAndDeletedCodes = \App\Models\InviteCode::query()->whereNotNull('booked_at')->withTrashed()->get()->pluck('code')->toArray();
-    $allBookedCodes        = array_merge($bookedCodes, $bookedAndDeletedCodes);
-    $usedCodes             = \App\Models\InviteCode::query()->withTrashed()->get()->pluck('code')->toArray();
-    $canAddCodes           = in_array($handle, \App\Models\InviteCode::CAN_ADD_CODES);
+    $trains                = \App\Models\InviteCode::getCodesByHandle($handle);
+    $isSuperAdmin          = in_array($handle, \App\Models\InviteCode::SUPER_ADMINS);
     $queues                = \App\Models\InviteCode::getQueuesByHandle($handle);
     $isConductor           = \App\Models\InviteCode::isConductor($handle);
     $isOpened              = 0;
-    ksort($trains);
-    ksort($queues);
+    uksort($trains, static function ($keyA, $keyB) {
+        return (int)$keyA <=> (int)$keyB; });
+    uksort($queues, static function ($keyA, $keyB) {
+        return (int)$keyA <=> (int)$keyB; });
     ?>
     <div class="container">
         <div class="row justify-content-center">
@@ -105,7 +102,7 @@
                             </div>
                         </div>
                     @endif
-                    @if($canAddCodes)
+                    @if($isSuperAdmin)
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingAddNewInviteCodes">
                                 <button class="accordion-button{{ !$isOpened ? '' : ' collapsed' }}" type="button"
@@ -126,7 +123,7 @@
                             </div>
                         </div>
                     @endif
-                    @if($canAddCodes)
+                    @if($isSuperAdmin)
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingMoveChurchCodesTo">
                                 <button class="accordion-button{{ !$isOpened ? '' : ' collapsed' }}" type="button"
@@ -143,6 +140,27 @@
                                  data-bs-parent="#accordionMoveChurchCodesTo">
                                 <div class="accordion-body">
                                     @include('codes.parts.move-codes')
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if($isSuperAdmin)
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingInviteCodeRestoring">
+                                <button class="accordion-button{{ !$isOpened ? '' : ' collapsed' }}" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapseInviteCodeRestoring"
+                                        aria-expanded="{{ !$isOpened ? 'true' : 'false' }}"
+                                        aria-controls="collapseInviteCodeRestoring">
+                                    Відновити інвайт-коди 🎟️
+                                </button>
+                            </h2>
+                            <div id="collapseInviteCodeRestoring"
+                                 class="accordion-collapse collapse {{ !$isOpened++ ? 'show' : '' }}"
+                                 aria-labelledby="headingInviteCodeRestoring"
+                                 data-bs-parent="#accordionInviteCodeRestoring">
+                                <div class="accordion-body">
+                                    @include('codes.parts.restore-codes')
                                 </div>
                             </div>
                         </div>

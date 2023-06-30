@@ -33,7 +33,7 @@ class InviteCode extends Model
         'booked_at' => 'datetime',
     ];
 
-    public const CAN_ADD_CODES = [
+    public const SUPER_ADMINS = [
         'setnemo.online',
         'uabluerail.org',
         'bsky.church',
