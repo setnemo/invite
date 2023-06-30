@@ -44,7 +44,7 @@
                 <div style="align-items:center; justify-content: center; display:flex;">
                     <button id="donate" type="submit" class="btn btn-danger"
                             disabled>
-                        Віддати жебракам
+                        Пожертвувати invite code 🎟️
                     </button>
                 </div>
             </div>

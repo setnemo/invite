@@ -47,7 +47,7 @@ class InviteCode extends Model
     ];
 
     public const TRAIN_MAP = [
-        1  => '№1 "Церква Святого Інвайту"',
+        1  => 'На Церкву (може піти на будь-який поїзд)"',
         5  => '№5 "Військовий"',
         6  => '№6 "Qırım"',
         7  => '№7 "Волонтерський"',
@@ -56,7 +56,7 @@ class InviteCode extends Model
         12 => '№12 "Укррайт"',
         14 => '№14 "Укркосплей"',
         15 => '№15 "Блоґерский"',
-        16 => '№16 "Розіграші"',
+        16 => '№16 "Азартний"',
         17 => '№17 "Три Панди"',
         18 => '№18 "Лаковарний"',
     ];
@@ -69,16 +69,16 @@ class InviteCode extends Model
         'setnemo.online'             => [1, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20],
         'uabluerail.org'             => [1, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20],
         'bsky.church'                => [1, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20],
-        'mathan.dev'                 => [11],
-        'djema.qirim.land'           => [5, 6, 7],
-        'deadcake.bsky.social'       => [7],
-        'uacraft.bsky.social'        => [8],
-        'ukrfanficshn.bsky.social'   => [12],
-        'eklesa.bsky.social'         => [14],
-        'soloplayerua.bsky.social'   => [15],
-        'alco-alchemist.bsky.social' => [16],
-        'rikk-tikki-tav.bsky.social' => [17],
-        'headhyperempty.bsky.social' => [18],
+        'mathan.dev'                 => [1, 11],
+        'djema.qirim.land'           => [1, 5, 6, 7],
+        'deadcake.bsky.social'       => [1, 7],
+        'uacraft.bsky.social'        => [1, 8],
+        'ukrfanficshn.bsky.social'   => [1, 12],
+        'eklesa.bsky.social'         => [1, 14],
+        'soloplayerua.bsky.social'   => [1, 15],
+        'alco-alchemist.bsky.social' => [1, 16],
+        'rikk-tikki-tav.bsky.social' => [1, 17],
+        'headhyperempty.bsky.social' => [1, 18],
     ];
 
     public static function isConductor(string $handle): bool

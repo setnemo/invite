@@ -34,32 +34,32 @@ $currentIt = 0; ?>
                                       class="btn btn-xs btn-success request-button-unbook"
                                       data-code="{{ $item->code }}"
                                       data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                      title="Разбукати Invite Code">
-                                        <i class="fa fa-share" aria-hidden="true"></i> Разбукати
+                                      title="Повернути Invite Code 🎟️">
+                                        <i class="fa fa-share" aria-hidden="true"></i> Повернути 🎟️
                                         </span>
                                 <hr>
                                 <span data-id="{{ $item->id }}"
                                       class="btn btn-xs btn-danger request-button-forget"
                                       data-code="{{ $item->code }}"
                                       data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                      title="Забути Invite Code">
-                                        <i class="fa fa-times" aria-hidden="true"></i> Забути
+                                      title="Забути Invite Code 🎟️">
+                                        <i class="fa fa-times" aria-hidden="true"></i> Забути 🎟️
                                         </span>
                                 <hr>
                                 <span data-id="{{ $item->id }}"
                                       class="btn btn-xs btn-primary request-button-text"
                                       data-code="{{ $item->code }}"
                                       data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                      title="Подивитися Invite Code">
-                                        <i class="fa fa-eye" aria-hidden="true"></i> Подивитись
+                                      title="Подивитись Invite Code 🎟️">
+                                        <i class="fa fa-eye" aria-hidden="true"></i> Подивитись 🎟️
                                         </span>
                             @else
                                 <span data-id="{{ $item->id }}"
                                       class="btn btn-xs btn-warning request-button-book"
                                       data-code="{{ $item->code }}"
                                       data-handle='https://bsky.app/profile/{{ $item->giver_did }}'
-                                      title="Забукати Invite Code">
-                                        <i class="fa fa-book" aria-hidden="true"></i> Забукати
+                                      title="Забронювати Invite Code 🎟️">
+                                        <i class="fa fa-book" aria-hidden="true"></i> Забронювати 🎟️
                                     </span>
                             @endif
                             <hr>
@@ -74,7 +74,7 @@ $currentIt = 0; ?>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Код забукано!</h5>
+                <h5 class="modal-title">Код 🎟️ заброньовано!</h5>
             </div>
             <div class="modal-body">
                 <p>Вітаємо!</p>

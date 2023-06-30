@@ -15,7 +15,7 @@
                                 </label>
                                 <div class="col-md-6">
                                     <input id="identifier" type="text" class="form-control" name="identifier"
-                                           value="zsu.bsky.social" required autofocus>
+                                           placeholder="mynickname.bsky.social" required autofocus>
                                 </div>
                             </div>
 
@@ -41,9 +41,15 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="row mb-0 m-2">
+                            <div class="row mb-0 m-3" style="align-items:center; justify-content: center; display:flex;">
                                 <div>
                                     <p class="lead">Закрито для тестування!</p>
+                                    <p class="lead">Для логіну ви використовуєте свій логін блюскай. В більшості випадків він виглядає як
+                                        "mynickname.bsky.social". Якщо у вас кастомний домен, наприклад @setnemo.online, - вводьте його.
+                                        Ви можете ввести свій пароль, але ми наполегливо рекомендуємо використовувати тимчасові паролі,
+                                        які можна згенерувати в налаштуваннях Settings -> App Password.
+                                        Їх можна і варто створювати аби логінитися своїм Bluesky аккаунтом на інших сайтах/застосунках.
+                                        Це більш безпечно, адже так ви не надаєте свій основний пароль нікому крім офіційного застосунку Bluesky.</p>
                                 </div>
                             </div>
                         </form>

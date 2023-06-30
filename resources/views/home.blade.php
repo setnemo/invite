@@ -25,7 +25,7 @@
                                         data-bs-target="#moderateCodes"
                                         aria-expanded="{{ !$isOpened ? 'true' : 'false' }}"
                                         aria-controls="moderateCodes">
-                                    Робочі Інвайт Коди Для Роздачі
+                                    Робочі інвайт коди для роздачі
                                 </button>
                             </h2>
                             <div id="moderateCodes" class="accordion-collapse collapse {{ !$isOpened++ ? 'show' : '' }}"
@@ -44,7 +44,7 @@
                                     data-bs-target="#collapseMyInviteCodes"
                                     aria-expanded="{{ !$isOpened ? 'true' : 'false' }}"
                                     aria-controls="collapseMyInviteCodes">
-                                Мої інвайт коди для дарування
+                                Інвайт коди з вашого профіля
                             </button>
                         </h2>
                         <div id="collapseMyInviteCodes"
