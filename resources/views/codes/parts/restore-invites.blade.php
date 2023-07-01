@@ -18,7 +18,25 @@ $items = \App\Models\Invite::query()->withTrashed()->whereNotNull('deleted_at')-
             <tbody>
             @foreach($items->all() as $item)
                 <tr>
-                    <td>{{ $item->link }}</td>
+                    <td>
+                        {{ $item->link }}
+                        @if($ai = $item->autoInvite()->withTrashed()->first())
+                            <hr>
+                            <span data-id="{{ $item->id }}"
+                                  class="btn btn-xs request-button-show-auto-invite-trashed
+                                      @if($ai->done && $ai->successful)
+                                      btn-success
+                                      @elseif($ai->done)
+                                      btn-warning
+                                      @else
+                                      btn-primary
+                                      @endif
+                                      "
+                                  title="Подивитися Auto Invite">
+                                <i data-id="{{ $item->id }}" class="fa fa-eye" aria-hidden="true"></i> Статус автоінвайту</span>
+                            <hr>
+                        @endif
+                    </td>
                     <td>{{ \App\Models\InviteCode::TRAIN_MAP[$item->train_number] ?? '' }}</td>
                     <td><a href="https://bsky.app/profile/{{ $item->remover_did }}">{{ $item->remover_handle }}</a>
                         ({{ $item->remover_email }})
@@ -43,8 +61,93 @@ $items = \App\Models\Invite::query()->withTrashed()->whereNotNull('deleted_at')-
             </tbody>
         </table>
     </div>
+    <div id="copyTextAutoTrashedModal" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Статус автоматичної реєстрації</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Посилання: <span id="text-trashed-link"></span></p>
+                    <p>Потяг: <span id="text-trashed-train"></span></p>
+                    <p>email: <span id="text-trashed-email"></span></p>
+                    <p>username: <span id="text-trashed-username"></span></p>
+                    <p>password: <span id="text-trashed-password"></span></p>
+                    <p>Бот намагався зареєструвати: <span id="text-trashed-done"></span></p>
+                    <p>Зареєстровано: <span id="text-trashed-successful"></span></p>
+                    <p>Результат: <span id="text-trashed-response"></span></p>
+                </div>
+                <textarea id="text-trashed-auto-copy" hidden="hidden"></textarea>
+                <div class="modal-footer">
+                    <button id="copyTextAutoTrashed" onclick="javascipt:copyText();" class="btn btn-warning">
+                        Текст для відправки
+                    </button>
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="module">
         $(function () {
+            const textSuccessTrashed = `Вітаємо!
+Вас успішно зареєстровано!
+
+Android: https://play.google.com/store/apps/details?id=xyz.blueskyweb.app&hl=en_US&pli=1
+
+iOS: https://apps.apple.com/us/app/bluesky-social/id6444370199
+
+Desktop: https://bsky.app
+
+Ваш логін: :login
+Ваш пароль: :password
+Ваш email: :email
+
+Нагадуємо що інвайти які ви будете отримувати ви можете подарувати на сайті https://invite.bluesky.co.ua та підтримати українськи спільноти.
+
+Дякуємо!
+`
+            window.copyText = function () {
+                let copyText = document.getElementById("text-trashed-auto-copy");
+                copyText.select();
+                copyText.setSelectionRange(0, 99999); // For mobile devices
+                navigator.clipboard.writeText(copyText.value);
+                alert('Текст скопійовано');
+                return false;
+            }
+            $('.request-button-show-auto-invite-trashed').on('click', event => {
+                let current = $(event.target);
+                let id = current.data('id');
+                $.ajax({
+                    type: 'GET',
+                    url: `{{ route('welcome') }}/invite/` + id,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function (data) {
+                        console.log(data);
+                        $("#text-trashed-link").html(data.link);
+                        $("#text-trashed-train").html(data.train_number);
+                        $("#text-trashed-email").html(data.auto_invite.email);
+                        $("#text-trashed-username").html(data.auto_invite.username);
+                        $("#text-trashed-password").html(data.auto_invite.password);
+                        $("#text-trashed-done").html(data.auto_invite.done ? 'Так' : 'Ні');
+                        $("#text-trashed-successful").html(data.auto_invite.successful ? 'Так' : 'Ні');
+                        $("#text-trashed-response").html(data.auto_invite.response);
+                        let success = $("#text-trashed-auto-copy");
+                        success.val(textSuccessTrashed.replace(':login', data.auto_invite.username).replace(':password', data.auto_invite.password).replace(':email', data.auto_invite.email));
+                        if (data.auto_invite.successful !== true) {
+                            $('#copyTextAutoTrashed').attr('disabled', 'disabled');
+                        }
+                        new bootstrap.Modal(document.getElementById('copyTextAutoTrashedModal'), {
+                            keyboard: false
+                        }).toggle();
+                    },
+                    error: function (result) {
+                        alert('error');
+                    }
+                });
+            });
             $('.request-button-invite-restore').on('click', event => {
                 if (!confirm('Відновити місце в черзі?')) {
                     return;
@@ -57,6 +160,7 @@ $items = \App\Models\Invite::query()->withTrashed()->whereNotNull('deleted_at')-
                     url: `{{ route('welcome') }}/invite-restore/` + id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function (data) {
+                        console.log(data);
                         window.location.reload();
                     },
                     error: function (result) {
@@ -78,6 +182,7 @@ $items = \App\Models\Invite::query()->withTrashed()->whereNotNull('deleted_at')-
                     url: `{{ route('welcome') }}/invite-force-delete/` + id,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function (data) {
+                        console.log(data);
                         window.location.reload();
                     },
                     error: function (result) {

@@ -71,6 +71,7 @@ $items = \App\Models\InviteCode::query()->withTrashed()->whereNotNull('deleted_a
                         remover_did: `{{ $account['did'] ?? '' }}`
                     },
                     success: function (data) {
+                        console.log(data);
                         window.location.reload();
                     },
                     error: function (result) {
@@ -97,6 +98,7 @@ $items = \App\Models\InviteCode::query()->withTrashed()->whereNotNull('deleted_a
                         remover_did: `{{ $account['did'] ?? '' }}`
                     },
                     success: function (data) {
+                        console.log(data);
                         window.location.reload();
                     },
                     error: function (result) {

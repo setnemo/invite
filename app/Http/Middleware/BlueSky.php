@@ -10,6 +10,7 @@ class BlueSky
     public function handle(Request $request, Closure $next)
     {
         if (!$request->session()->has('blue_sky_access_jwt')) {
+            dd(1);
             return redirect(route('welcome'));
         }
         if (config('app.under_test', false)) {

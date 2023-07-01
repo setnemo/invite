@@ -12,9 +12,10 @@ class BlueSkyConductor
         if (!$request->session()->has('blue_sky_access_jwt')) {
             return redirect(route('welcome'));
         }
-        $account = json_decode(session()->get('account', '{}'), true);
+        $account = json_decode($request->session()->get('account', '{}'), true);
         $handle  = $account['handle'] ?? '';
         if (empty(\App\Models\InviteCode::CONDUCTORS_MAP[$handle])) {
+            dd(2);
             return redirect(route('welcome'));
         }
 

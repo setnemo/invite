@@ -37,12 +37,17 @@ class Invite extends Model
         });
     }
 
+//    public function getTrainNumberAttribute($value)
+//    {
+//        return \App\Models\InviteCode::TRAIN_MAP[$value ?? ''] ?? '-';
+//    }
+
     /**
      * @return BelongsTo
      */
     public function autoInvite(): BelongsTo
     {
-        return $this->belongsTo(InviteAutoRegistration::class, 'id', 'invite_id');
+        return $this->belongsTo(InviteAutoRegistration::class, 'id', 'invite_id')->withTrashed();
     }
 
     /**

@@ -203,7 +203,7 @@ Desktop: https://bsky.app
                 success: function (data) {
                     console.log(data);
                     $("#text-link").html(data.link);
-                    $("#text-train").html(data.train);
+                    $("#text-train").html(data.train_number);
                     $("#text-email").html(data.auto_invite.email);
                     $("#text-username").html(data.auto_invite.username);
                     $("#text-password").html(data.auto_invite.password);
