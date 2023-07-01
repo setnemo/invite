@@ -170,7 +170,29 @@ Desktop: https://bsky.app
             alert('Текст скопійовано');
             return false;
         }
-
+        $('.request-button-forget-invite').on('click', event => {
+            if (!confirm('Забути інвайт?')) {
+                return;
+            }
+            let current = $(event.target);
+            let id = current.data('id');
+            $.ajax({
+                type: 'POST',
+                url: `{{ route('welcome') }}/forget-invite/` + id,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: {
+                    remover_handle: `{{ $handle }}`,
+                    remover_email: `{{ $account['email'] ?? '' }}`,
+                    remover_did: `{{ $account['did'] ?? '' }}`
+                },
+                success: function (data) {
+                    window.location.reload();
+                },
+                error: function (result) {
+                    alert('error');
+                }
+            });
+        });
         $('.request-button-show-auto-invite').on('click', event => {
             let current = $(event.target);
             let id = current.data('id');

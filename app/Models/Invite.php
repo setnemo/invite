@@ -24,6 +24,14 @@ class Invite extends Model
         'remover_did',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::softDeleted(static function (Invite $invite) {
+            $invite->autoInvite->delete();
+        });
+    }
 
     /**
      * @return BelongsTo
@@ -40,7 +48,7 @@ class Invite extends Model
     public static function forget($id)
     {
         return self::query()->where('id', $id)->get()->each(static function (Invite $invite) {
-            $invite->runSoftDelete();
+            $invite->delete();
         });
     }
 }

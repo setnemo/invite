@@ -35,13 +35,7 @@ Route::middleware(['has.secret'])->group(static function () {
 
     Route::get('/autoqueue', static function () {
         return new JsonResponse(
-            \App\Models\InviteAutoRegistration::query()
-                ->where('successful', '=', false)
-                ->where('done', '=', false)
-                ->orderBy('invite_id')
-                ->get()
-                ->first()
-                ->toArray()
+            \App\Models\InviteAutoRegistration::query()->where('successful', '=', false)->where('done', '=', false)->orderBy('invite_id')->get()->first()->toArray()
         );
     })->name('autoqueue-get-one');
     Route::patch('/autoqueue', static function () {
