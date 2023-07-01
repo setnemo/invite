@@ -155,8 +155,8 @@ iOS: https://apps.apple.com/us/app/bluesky-social/id6444370199
 Desktop: https://bsky.app
 
 Ваш логін: :login
-Ваш логін: :password
-Ваш логін: :email
+Ваш пароль: :password
+Ваш email: :email
 
 Нагадуємо що інвайти які ви будете отримувати ви можете подарувати на сайті https://invite.bluesky.co.ua та підтримати українськи спільноти.
 
