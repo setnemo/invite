@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use LaravelIdea\Helper\App\Models\_IH_Invite_C;
 use LaravelIdea\Helper\App\Models\_IH_Invite_QB;
@@ -13,6 +14,8 @@ class Invite extends Model
 {
     use SoftDeletes;
 
+    protected $with = ['autoInvite',];
+
     protected $fillable = [
         'link',
         'train_number',
@@ -20,6 +23,15 @@ class Invite extends Model
         'remover_email',
         'remover_did',
     ];
+
+
+    /**
+     * @return BelongsTo
+     */
+    public function autoInvite(): BelongsTo
+    {
+        return $this->belongsTo(InviteAutoRegistration::class, 'id', 'invite_id');
+    }
 
     /**
      * @param $id
