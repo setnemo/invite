@@ -28,14 +28,37 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware(['guest'])->name('welcome');
 
-Route::get('/deploy', static function () {
-    return response(
-        null,
-        file_exists(base_path() . '/deploy.pid') ?
-            Response::HTTP_CONFLICT :
-            Response::HTTP_NO_CONTENT
-    );
-})->middleware(['dev'])->name('dev_deploy');
+Route::middleware(['has.secret'])->group(static function () {
+    Route::get('/deploy', static function () {
+        return response(
+            null,
+            file_exists(base_path() . '/deploy.pid') ?
+                Response::HTTP_CONFLICT :
+                Response::HTTP_NO_CONTENT
+        );
+    })->name('dev_deploy');
+
+    Route::get('/autoqueue', static function () {
+        return new JsonResponse(
+            \App\Models\InviteAutoRegistration::query()
+                ->where('successful', '=', false)
+                ->where('done', '=', false)
+                ->orderBy('invite_id')
+                ->get()
+                ->first()
+                ->toArray()
+        );
+    })->name('autoqueue-get-one');
+    Route::patch('/autoqueue', static function () {
+        $input = request()->toArray();
+        \App\Models\InviteAutoRegistration::query()
+            ->where('email', '=', $input['email'])
+            ->where('username', '=', $input['username'])
+            ->update($input);
+        return new JsonResponse(['success' => true]);
+    })->name('autoqueue-get-one');
+});
+
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('show-login-form');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
@@ -49,9 +72,10 @@ Route::post('/unbook/{id}', [InviteCodeController::class, 'unbook'])->name('invi
 Route::post('/forget/{id}', [InviteCodeController::class, 'forget'])->name('invite-forget');
 Route::post('/move', [InviteCodeController::class, 'move'])->name('invite-move');
 Route::post('/forget-invite/{id}', [InviteController::class, 'forget'])->name('invite-forget');
+Route::get('/invite/{id}', [InviteController::class, 'getOne'])->name('invite-get');
 Route::post('/invite', [InviteController::class, 'add'])->name('invite-add');
 
-Route::middleware(['blue-sky-super-admin'])->group(static function () {
+Route::middleware(['bluesky.admin.super'])->group(static function () {
     Route::post('/invite-code-restore/{id}', [InviteCodeController::class, 'restore'])->name('invite-code-restore');
     Route::post('/invite-code-force-delete/{id}', [InviteCodeController::class, 'forceDelete'])->name('invite-code-force-delete');
     Route::post('/invite-restore/{id}', [InviteController::class, 'restore'])->name('invite-restore');

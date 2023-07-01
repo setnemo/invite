@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invite;
+use App\Models\InviteAutoRegistration;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,16 @@ class InviteController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('blue-sky-admin');
+        $this->middleware('bluesky.admin');
+    }
+
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getOne(int $id): JsonResponse
+    {
+        return new JsonResponse(Invite::query()->whereId($id)->get()->first()->toArray());
     }
 
     /**
@@ -30,8 +40,17 @@ class InviteController extends Controller
             'link'         => $link,
             'train_number' => intval($train),
         ]);
-        session()->put('invite_send_id', $invite->id);
-
+        if (isset($data['username']) && isset($data['email'])) {
+            $password = $data['password'] ?? '';
+            $username = $data['username'];
+            $email    = $data['email'];
+            InviteAutoRegistration::query()->create([
+                'invite_id' => $invite->refresh()->id,
+                'password'  => $password,
+                'username'  => $username,
+                'email'     => $email,
+            ]);
+        }
         return redirect(route('home'));
     }
 

@@ -53,15 +53,15 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
-        'blue-sky'             => \App\Http\Middleware\BlueSky::class,
-        'blue-sky-admin'       => \App\Http\Middleware\BlueSky::class,
-        'blue-sky-super-admin' => \App\Http\Middleware\BlueSky::class,
+        'bluesky'             => \App\Http\Middleware\BlueSky::class,
+        'bluesky.admin'       => \App\Http\Middleware\BlueSkyConductor::class,
+        'bluesky.admin.super' => \App\Http\Middleware\BlueSkySuperAdmin::class,
         'auth'                 => \App\Http\Middleware\Authenticate::class,
         'auth.basic'           => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session'         => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers'        => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can'                  => \Illuminate\Auth\Middleware\Authorize::class,
-        'dev'                  => \App\Http\Middleware\Development::class,
+        'has.secret'           => \App\Http\Middleware\HasSecret::class,
         'guest'                => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'password.confirm'     => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed'               => \App\Http\Middleware\ValidateSignature::class,

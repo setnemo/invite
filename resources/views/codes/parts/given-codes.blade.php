@@ -19,12 +19,12 @@ $currentIt = 0; ?>
                         }
                     }
                     ?>
-                @if($free)
-                    <span class="badge rounded-pill bg-success m-1">{{ $free }}</span>
-                @endif
-                @if($booked)
-                    <span class="badge rounded-pill bg-warning m-1">{{ $booked }}</span>
-                @endif
+                    @if($free)
+                        <span class="badge rounded-pill bg-success m-1">{{ $free }}</span>
+                    @endif
+                    @if($booked)
+                        <span class="badge rounded-pill bg-warning m-1">{{ $booked }}</span>
+                    @endif
                 {{ $name }}
             </button>
         </h2>
@@ -81,7 +81,7 @@ $currentIt = 0; ?>
         </div>
     </div>
 @endforeach
-<div id="myModal" class="modal" tabindex="-1">
+<div id="copyTextModal" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -110,7 +110,7 @@ $currentIt = 0; ?>
             <textarea id="text-copy" hidden="hidden"></textarea>
             <div class="modal-footer">
                                 <span onclick="javascipt:copyText();" class="btn btn-warning">
-                                    Copy text
+                                    Текст для відправки
                                 </span>
                 <button id="reload" type="button" class="btn btn-secondary"
                         data-bs-dismiss="modal">
@@ -146,29 +146,6 @@ Desktop: https://bsky.app
             alert('Текст скопійовано');
             return false;
         }
-        $('.request-button-forget-invite').on('click', event => {
-            if (!confirm('Забути інвайт?')) {
-                return;
-            }
-            let current = $(event.target);
-            let id = current.data('id');
-            $.ajax({
-                type: 'POST',
-                url: `{{ route('welcome') }}/forget-invite/` + id,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: {
-                    remover_handle: `{{ $handle }}`,
-                    remover_email: `{{ $account['email'] ?? '' }}`,
-                    remover_did: `{{ $account['did'] ?? '' }}`
-                },
-                success: function (data) {
-                    window.location.reload();
-                },
-                error: function (result) {
-                    alert('error');
-                }
-            });
-        });
         $('.request-button-book').on('click', event => {
             let current = $(event.target);
             let id = current.data('id');
@@ -188,7 +165,7 @@ Desktop: https://bsky.app
                     $("#giver").html(handle);
                     let text = $("#text-copy");
                     text.val(textInvite.replace(':code', code).replace(':giver', handle));
-                    new bootstrap.Modal(document.getElementById('myModal'), {
+                    new bootstrap.Modal(document.getElementById('copyTextModal'), {
                         keyboard: false
                     }).toggle();
                 },
@@ -243,7 +220,7 @@ Desktop: https://bsky.app
             $("#code").html(code);
             $("#giver").html(handle);
             text.val(textInvite.replace(':code', code).replace(':giver', handle));
-            new bootstrap.Modal(document.getElementById('myModal'), {
+            new bootstrap.Modal(document.getElementById('copyTextModal'), {
                 keyboard: false
             }).toggle();
         });

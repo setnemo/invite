@@ -17,7 +17,7 @@ class InviteCodeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('blue-sky-admin');
+        $this->middleware('bluesky.admin');
     }
 
     /**
