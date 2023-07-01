@@ -31,6 +31,10 @@ class Invite extends Model
         static::softDeleted(static function (Invite $invite) {
             $invite->autoInvite->delete();
         });
+
+        static::restored(static function (Invite $invite) {
+            $invite->autoInvite->restore();
+        });
     }
 
     /**
