@@ -15,7 +15,6 @@ class BlueSkyConductor
         $account = json_decode($request->session()->get('account', '{}'), true);
         $handle  = $account['handle'] ?? '';
         if (empty(\App\Models\InviteCode::CONDUCTORS_MAP[$handle])) {
-            dd(2);
             return redirect(route('welcome'));
         }
 
