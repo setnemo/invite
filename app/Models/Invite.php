@@ -29,11 +29,11 @@ class Invite extends Model
         parent::boot();
 
         static::softDeleted(static function (Invite $invite) {
-            $invite->autoInvite->delete();
+            $invite->autoInvite()->delete();
         });
 
         static::restored(static function (Invite $invite) {
-            $invite->autoInvite->restore();
+            $invite->autoInvite()->withTrashed()->restore();
         });
     }
 

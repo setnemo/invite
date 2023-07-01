@@ -77,7 +77,7 @@ class InviteController extends Controller
      */
     public function restore(int $id): JsonResponse
     {
-        return new JsonResponse(['success' => (bool)Invite::query()->withTrashed()->whereId($id)->restore()]);
+        return new JsonResponse(['success' => (bool)Invite::query()->withTrashed()->whereId($id)->first()->restore()]);
     }
 
     /**
@@ -86,6 +86,6 @@ class InviteController extends Controller
      */
     public function forceDelete(int $id): JsonResponse
     {
-        return new JsonResponse(['success' => (bool)Invite::query()->withTrashed()->whereId($id)->forceDelete()]);
+        return new JsonResponse(['success' => (bool)Invite::query()->withTrashed()->whereId($id)->first()->forceDelete()]);
     }
 }
