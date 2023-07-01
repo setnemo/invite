@@ -88,3 +88,28 @@ $items = \App\Models\Invite::query()->withTrashed()->whereNotNull('deleted_at')-
         });
     </script>
 @endif
+<div class="accordion mt-2" id="accordionHelpRestoreInvites">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingHelpRestoreInvites">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#helpRestoreInvites"
+                    aria-expanded="false"
+                    aria-controls="helpRestoreInvites">
+                Довідка по розділу
+            </button>
+        </h2>
+        <div id="helpRestoreInvites" class="accordion-collapse collapse"
+             aria-labelledby="headingHelpRestoreInvites"
+             data-bs-parent="#helpRestoreInvites">
+            <div class="accordion-body">
+                <p class="lead">
+                    Таблиця яка дозволяє відновити інвайти, які видалено кнопкою "Забути"
+                    в розділі "Живі черги 🚶🚶🚶". Також там можно побачити хто "забув" інвайт з кондукторів. Є кнопка
+                    безповоротньо видалити код з бази даних. Зробив це тільки для тестів, коли руками накидаємо інвайтів
+                    і треба буде потім почистити.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

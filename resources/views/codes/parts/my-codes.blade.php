@@ -3,7 +3,8 @@
         @csrf
         <div class="row mb-3 p-3">
             @foreach($codes as $code)
-                <div class="col-md-3" style="{{ !empty($code['uses']) && !in_array($code['code'], $addedCodes) && !in_array($code['code'], $deletedCodes) ? 'display: none' : '' }}">
+                <div class="col-md-3"
+                     style="{{ !empty($code['uses']) && !in_array($code['code'], $addedCodes) && !in_array($code['code'], $deletedCodes) ? 'display: none' : '' }}">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="{{ $code['code'] }}"
                                name="{{ $code['code'] }}" {{ !empty($code['uses']) || (in_array($code['code'], $addedCodes)) ? 'disabled' : '' }}>
@@ -50,3 +51,39 @@
         });
     });
 </script>
+
+<div class="accordion mt-2" id="accordionHelpMyCodes">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingHelpMyCodes">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#helpMyCodes"
+                    aria-expanded="false"
+                    aria-controls="helpMyCodes">
+                Довідка по розділу
+            </button>
+        </h2>
+        <div id="helpMyCodes" class="accordion-collapse collapse"
+             aria-labelledby="headingHelpMyCodes"
+             data-bs-parent="#helpMyCodes">
+            <div class="accordion-body">
+                <p class="lead">
+                    Розділ показує які коди, у вас є (доступні і не доступні), які сайт побачив в Вашому аккаунті
+                    BlueSky
+                </p>
+                <ul>
+                    <li>блактиний: Код додано до системи, дякуємо</li>
+                    <li>помаранчевий: Код раніше вже додавався до системи</li>
+                    <li>червоний: Код недійсний :(</li>
+                    <li>зелений: Код використано, дякуємо!</li>
+                    <li>бірюзовий: Код доступний для пожертви</li>
+                </ul>
+                <p class="lead">
+                    Для пожертви коду в систему треба обрати його галкою, обрати потяг в який ви хочете його
+                    пожертвувати,
+                    і натиснути "Пожертвувати інвайт-код 🎟️"
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

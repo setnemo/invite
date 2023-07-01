@@ -46,3 +46,26 @@
         </div>
     </div>
 </form>
+<div class="accordion mt-2" id="accordionHelpMoveCodes">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingHelpMoveCodes">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#helpMoveCodes"
+                    aria-expanded="false"
+                    aria-controls="helpMoveCodes">
+                Довідка по розділу
+            </button>
+        </h2>
+        <div id="helpMoveCodes" class="accordion-collapse collapse"
+             aria-labelledby="headingHelpMoveCodes"
+             data-bs-parent="#helpMoveCodes">
+            <div class="accordion-body">
+                <p class="lead">
+                    Тут все просто, вибирається з якого потягу в який, та кількість. Чисто для зручності коли
+                    одна черга має багато кодів, і треба поділитися
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

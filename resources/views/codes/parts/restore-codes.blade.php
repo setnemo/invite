@@ -107,3 +107,28 @@ $items = \App\Models\InviteCode::query()->withTrashed()->whereNotNull('deleted_a
         });
     </script>
 @endif
+<div class="accordion mt-2" id="accordionHelpRestoreCodes">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingHelpRestoreCodes">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#helpRestoreCodes"
+                    aria-expanded="false"
+                    aria-controls="helpRestoreCodes">
+                Довідка по розділу
+            </button>
+        </h2>
+        <div id="helpRestoreCodes" class="accordion-collapse collapse"
+             aria-labelledby="headingHelpRestoreCodes"
+             data-bs-parent="#helpRestoreCodes">
+            <div class="accordion-body">
+                <p class="lead">
+                    Таблиця яка дозволяє відновити інвайт-коди, які видалено кнопкою "Видалити 🎟️ (Код використано або додано помилково)"
+                    в розділі "Доступні інвайт-коди 🎟️ для роздачі". Також там можно побачити хто подарував код,
+                    хто його бронював з кондукторів і їто натиснув "Забути". Є кнопка безповоротньо видалити код з бази даних.
+                    Зробив це тільки для тестів, коли руками накидаємо кодів і треба буде потім почистити.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
