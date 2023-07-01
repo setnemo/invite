@@ -25,10 +25,10 @@ $currentIt = 0; ?>
                     <span class="badge rounded-pill bg-danger m-1">{{ $autoFinishDone }}</span>
                 @endif
                 @if($autoFinish)
-                    <span class="badge rounded-pill bg-success m-1">{{ $autoFinish }}</span>
+                    <span class="badge rounded-pill bg-warning m-1">{{ $autoFinish }}</span>
                 @endif
                 @if($without)
-                    <span class="badge rounded-pill bg-warning m-1">{{ $without }}</span>
+                    <span class="badge rounded-pill bg-success m-1">{{ $without }}</span>
                 @endif
                 {{ $name }}
             </button>
@@ -90,6 +90,14 @@ $currentIt = 0; ?>
              data-bs-parent="#helpLiveQueues">
             <div class="accordion-body">
                 <p class="lead">
+                    Розшифровка кольору бейджів в назві
+                </p>
+                <ul>
+                    <li>зелений: в черзі є звичані користувачі</li>
+                    <li>жовтиий: в черзі є користувачі які погодились на автореєстрацію</li>
+                    <li>червоний: в черзі є користувачі які погодились на автореєстрацію, по яким є результат</li>
+                </ul>
+                <p class="lead">
                     Цей розділ показує черги, які провідники самостійно додали на сайт.
                     Кожен потяг бачить тільки свою, якщо провідник на кілька черг - бачить тільки свої.
                     Цей блок показує карточки черги, яка має в собі наступні поля
@@ -124,10 +132,10 @@ $currentIt = 0; ?>
             </div>
             <textarea id="text-auto-copy" hidden="hidden"></textarea>
             <div class="modal-footer">
-                                <span onclick="javascipt:copyText();" class="btn btn-warning">
+                                <button id="copyTextAuto" onclick="javascipt:copyText();" class="btn btn-warning">
                                     Текст для відправки
-                                </span>
-                <button id="reload" type="button" class="btn btn-secondary"
+                                </button>
+                <button type="button" class="btn btn-secondary"
                         data-bs-dismiss="modal">
                     Close
                 </button>
@@ -182,8 +190,8 @@ Desktop: https://bsky.app
                     $("#text-response").html(data.auto_invite.response);
                     let success = $("#text-auto-copy");
                     success.val(textSuccess.replace(':login', data.auto_invite.username).replace(':password', data.auto_invite.password).replace(':email', data.auto_invite.email));
-                    if (!data.auto_invite.successful) {
-                        success.attr('disabled', 'disabled');
+                    if (data.auto_invite.successful !== true) {
+                        $('#copyTextAuto').attr('disabled', 'disabled');
                     }
                     new bootstrap.Modal(document.getElementById('copyTextAutoModal'), {
                         keyboard: false
