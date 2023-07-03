@@ -26,7 +26,7 @@
                 <select class="form-select form-select-md mb-0"
                         aria-label=".form-select-md"
                         name="train" required>
-                    @foreach(\App\Models\InviteCode::TRAIN_MAP as $id => $name)
+                    @foreach(\App\Models\InviteCode::SELECT_MAP as $id => $name)
                         <option
                             value="{{ $id }} {{ isset(\App\Models\InviteCode::TRAIN_DISABLED[$id]) ? 'disabled' : '' }}">{{ $name }}</option>
                     @endforeach

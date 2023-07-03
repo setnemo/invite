@@ -48,6 +48,7 @@ class InviteCode extends Model
 
     ];
 
+    public const SELECT_MAP = [];
     public const TRAIN_MAP = [
         1  => '№1 Церква (може піти на будь-який поїзд)',
         5  => '№5 "Військовий"',
